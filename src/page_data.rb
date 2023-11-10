@@ -497,7 +497,7 @@ class PageData
   end
 
   def all
-    content_str = @dc_kos.read_whole_txt_file("/rd/content.dreampresent")
+    content_str = @dc_kos.content_string
     Parser.new.parse(content_str)
   end
 end
