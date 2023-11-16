@@ -1,5 +1,5 @@
 begin
-  DreamPresentWii.print_msg 'Starting presentation.'
+  # DreamPresentWii.print_msg 'Starting presentation.'
   Dreampresent.new(DcKosRb.new(DreamPresentWii)).start
 rescue => ex
   DreamPresentWii.print_msg "error"

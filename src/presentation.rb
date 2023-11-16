@@ -9,6 +9,8 @@ class Presentation
   def run
     idx = 0
     time_adjustment = 0
+    @dc_kos::init_controller_buffer
+    @dc_kos::start_controller_reader
     while(idx < @pages.length)
       input = @pages[idx].show(@dc_kos,
         PresentationState.new(idx, time_adjustment),
@@ -34,7 +36,7 @@ class Presentation
         time_adjustment -= 300
         time_adjustment = 0 if time_adjustment < 0
       end
-      puts "- - - - current idx = #{idx}"
+      #puts "- - - - current idx = #{idx}"
       idx = 0 if idx < 0 # do not wrap around backwards
     end
   end
