@@ -8,7 +8,7 @@
 #include <mruby/array.h>
 #include "mrbwii.h"
 
-static u32 *xfb = NULL;
+u32 *xfb ;
 static GXRModeObj *rmode = NULL;
 
 extern const uint8_t program[];
@@ -55,11 +55,14 @@ int main(int argc, char **argv) {
   // we can use variables for this with format codes too
   // e.g. printf ("\x1b[%d;%dH", row, column );
   printf("\x1b[2;0H");
+printf("initialized xfb at: %lx\n", (unsigned long)xfb);
+
 
   mrb_state *mrb = mrb_open();
   if (!mrb) { return 1; }
   struct RClass *dwii_module = mrb_define_module(mrb, "DreamPresentWii");
   define_module_functions(mrb, dwii_module);
+printf("after define_module_functions xfb: %lx\n", (unsigned long)xfb);
 
   mrb_load_irep(mrb, program);
   while(1) {

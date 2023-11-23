@@ -8,7 +8,7 @@
 #include <mruby/array.h>
 
 #define BUFSIZE 100
-static u32 *xfb = NULL;
+extern u32 *xfb ;
 
 struct InputBuf {
   uint16_t buffer[BUFSIZE];
@@ -25,7 +25,7 @@ static mrb_value print_msg(mrb_state *mrb, mrb_value self) {
 
   mrb_get_args(mrb, "S", &str_content);
   unwrapped_content = mrb_str_to_cstr(mrb, str_content);
-  printf("\x1b[10;0H");
+  //printf("\x1b[0;0H");
   printf("%s\n", unwrapped_content);
 
   return mrb_nil_value();
@@ -107,11 +107,9 @@ static u32 PACK_PIXEL(int r, int g, int b) {
   return CvtRGB(r, g, b, r, g, b);
 }
 
-static mrb_value draw20x20_640(mrb_state *mrb, mrb_value self) {
-  mrb_int x, y, r, g, b;
-  mrb_get_args(mrb, "iiiii", &x, &y, &r, &g, &b);
-
+static void draw_square(int x, int y, int r, int g, int b) {
   int i = 0, j = 0;
+//printf("xfb is: %lu\n", (unsigned long)xfb);
 
   if(r == 0 && g == 0 && b == 0) {
     for(i = 0; i < 20; i++) {
@@ -154,6 +152,13 @@ static mrb_value draw20x20_640(mrb_state *mrb, mrb_value self) {
     }
   }
 
+}
+
+static mrb_value draw20x20_640(mrb_state *mrb, mrb_value self) {
+  mrb_int x, y, r, g, b;
+  mrb_get_args(mrb, "iiiii", &x, &y, &r, &g, &b);
+
+  draw_square(x, y, r, g, b);
   return mrb_nil_value();
 }
 
@@ -253,24 +258,6 @@ static mrb_value btn_start(mrb_state *mrb, mrb_value self) {
   return mrb_bool_value(state & PAD_BUTTON_START);
 }
 
-static mrb_value clear_score(mrb_state *mrb, mrb_value self) {
-  char* clear_str = "Press START";
-  printf("\x1b[4;40H");
-  printf("%s", clear_str);
-  return mrb_nil_value();
-}
-
-static mrb_value render_score(mrb_state *mrb, mrb_value self) {
-  struct mrb_value score;
-  mrb_get_args(mrb, "i", &score);
-  // char buf[20];
-  // snprintf(buf, 20, "Score: %8" PRId32, score.w);
-  // printf("\x1b[4;60H");
-  // printf("%s", buf);
-
-  return mrb_nil_value();
-}
-
 static mrb_value get_current_button_index(mrb_state *mrb, mrb_value self) {
   // unimplemented
   return mrb_fixnum_value(0);
@@ -312,11 +299,23 @@ static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
   return mrb_nil_value();
 }
 
+
+static mrb_value info(mrb_state *mrb, mrb_value self) {
+	GXRModeObj *rmode = VIDEO_GetPreferredMode(NULL);
+	printf("Screen Resolution: %dx%d\n", rmode->fbWidth, rmode->efbHeight);
+  return mrb_nil_value();
+}
+
+static mrb_value reset_print_pos(mrb_state *mrb, mrb_value self) {
+  printf("\x1b[0;0H");
+  return mrb_nil_value();
+}
+
 //---------------------------------------------------------------------------------
 void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
+printf("---xfb is: %lx---\n", (unsigned long)xfb);
   mrb_define_module_function(mrb, mwii_module, "print_msg", print_msg, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "get_button_masks", get_button_masks, MRB_ARGS_NONE());
-  mrb_define_module_function(mrb, mwii_module, "clear_score", clear_score, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "draw20x20_640", draw20x20_640, MRB_ARGS_REQ(5));
   mrb_define_module_function(mrb, mwii_module, "init_controller_buffer", init_controller_buffer, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "start_controller_reader", start_controller_reader, MRB_ARGS_NONE());
@@ -331,11 +330,12 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "btn_a?", btn_a, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "btn_b?", btn_b, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "btn_start?", btn_start, MRB_ARGS_REQ(1));
-  mrb_define_module_function(mrb, mwii_module, "render_score", render_score, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "get_current_button_index", get_current_button_index, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "waitvbl", waitvbl, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "get_next_button_state", get_next_button_state, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "content_string", content_string, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "render_png", render_png, MRB_ARGS_REQ(3));
   mrb_define_module_function(mrb, mwii_module, "draw_str", draw_str, MRB_ARGS_REQ(7));
+  mrb_define_module_function(mrb, mwii_module, "info", info, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "reset_print_pos", reset_print_pos, MRB_ARGS_NONE());
 }
