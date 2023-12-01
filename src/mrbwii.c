@@ -6,6 +6,7 @@
 #include <mruby/irep.h>
 #include <mruby/string.h>
 #include <mruby/array.h>
+#include <unistd.h>
 
 #define BUFSIZE 100
 extern u32 *xfb ;
@@ -36,10 +37,10 @@ static mrb_value content_string(mrb_state *mrb, mrb_value self) {
 "\
 =\n\
 -bkg: /rd/bg_dark.png\n\
--txt,60,30:Developing your Dreamcast apps\n\
+-txt,60,30,red:Developing your Dreamcast apps\n\
                         and games with mruby\n\
--txt,60,120:Yuji Yokoo - @yujiyokoo\n\
--txt,120,260:PRESS START!\n\
+-txt,60,120,magenta:Yuji Yokoo - @yujiyokoo\n\
+-txt,120,260,yellow:PRESS START!\n\
 \n\
 = Resetting timer internally...\n\
 -resettimer\n\
@@ -295,10 +296,21 @@ static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
   mrb_get_args(mrb, "Siiiiii", &str_content, &x, &y, &r, &g, &b, &bg_on);
   unwrapped_content = mrb_str_to_cstr(mrb, str_content);
   // TODO: get coordinates working
-  printf("%s\n", unwrapped_content);
+  //printf("\033[%d;%dH", (y/8), (x/8));
+  //printf("\033[1;1H");
+  //printf("\033[0m");
+  printf("%s", unwrapped_content);
   return mrb_nil_value();
 }
 
+static void wait_for_start() {
+  while(1) {
+    PAD_ScanPads();
+    u16 btns = PAD_ButtonsHeld(0);
+    if(btns & PAD_BUTTON_START) break;
+  };
+  sleep(1);
+}
 
 static mrb_value info(mrb_state *mrb, mrb_value self) {
 	GXRModeObj *rmode = VIDEO_GetPreferredMode(NULL);
@@ -313,7 +325,6 @@ static mrb_value reset_print_pos(mrb_state *mrb, mrb_value self) {
 
 //---------------------------------------------------------------------------------
 void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
-printf("---xfb is: %lx---\n", (unsigned long)xfb);
   mrb_define_module_function(mrb, mwii_module, "print_msg", print_msg, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "get_button_masks", get_button_masks, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "draw20x20_640", draw20x20_640, MRB_ARGS_REQ(5));

@@ -57,7 +57,6 @@ int main(int argc, char **argv) {
   printf("\x1b[2;0H");
 printf("initialized xfb at: %lx\n", (unsigned long)xfb);
 
-
   mrb_state *mrb = mrb_open();
   if (!mrb) { return 1; }
   struct RClass *dwii_module = mrb_define_module(mrb, "DreamPresentWii");

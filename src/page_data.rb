@@ -457,7 +457,7 @@ class Parser
         when section.slice(0,4) == 'wait'
           WaitButtonContent.new
         when section.slice(0,4) == 'code'
-          x, y, lang, text_content = parse_code_line(section)
+          x, y, _lang, text_content = parse_code_line(section)
           CodeContent.new(x, y, text_content, nil)
         when section.slice(0,3) == 'txt'
           x, y, colour, show_bg, text_content = parse_line_xy_col_bg(section)
