@@ -7,9 +7,31 @@
 #include <mruby/string.h>
 #include <mruby/array.h>
 #include <unistd.h>
+#include <grrlib.h>
+#include "logo_png.h"
+#include "font_png.h"
 
 #define BUFSIZE 100
-extern u32 *xfb ;
+// grrlib defines xfb differently
+// extern u32 *xfb ;
+
+// RGBA Colors from GRRLIB example
+#define GRRLIB_BLACK   0x000000FF
+#define GRRLIB_MAROON  0x800000FF
+#define GRRLIB_GREEN   0x008000FF
+#define GRRLIB_OLIVE   0x808000FF
+#define GRRLIB_NAVY    0x000080FF
+#define GRRLIB_PURPLE  0x800080FF
+#define GRRLIB_TEAL    0x008080FF
+#define GRRLIB_GRAY    0x808080FF
+#define GRRLIB_SILVER  0xC0C0C0FF
+#define GRRLIB_RED     0xFF0000FF
+#define GRRLIB_LIME    0x00FF00FF
+#define GRRLIB_YELLOW  0xFFFF00FF
+#define GRRLIB_BLUE    0x0000FFFF
+#define GRRLIB_FUCHSIA 0xFF00FFFF
+#define GRRLIB_AQUA    0x00FFFFFF
+#define GRRLIB_WHITE   0xFFFFFFFF
 
 struct InputBuf {
   uint16_t buffer[BUFSIZE];
@@ -19,6 +41,7 @@ struct InputBuf {
 static mrb_value btn_mrb_buffer;
 
 extern const uint8_t program[];
+extern GRRLIB_texImg *tex_font;
 
 static mrb_value print_msg(mrb_state *mrb, mrb_value self) {
   char *unwrapped_content;
@@ -26,8 +49,7 @@ static mrb_value print_msg(mrb_state *mrb, mrb_value self) {
 
   mrb_get_args(mrb, "S", &str_content);
   unwrapped_content = mrb_str_to_cstr(mrb, str_content);
-  //printf("\x1b[0;0H");
-  printf("%s\n", unwrapped_content);
+  GRRLIB_Printf(500, 27, tex_font, GRRLIB_WHITE, 1, "%s\n", unwrapped_content);
 
   return mrb_nil_value();
 }
@@ -65,7 +87,7 @@ static mrb_value content_string(mrb_state *mrb, mrb_value self) {
     developer (MFC/Win32)\n\
   From: Tokyo, Japan\n\
   Lives in: Adelaide, South Australia\n\
--img,60,260: /rd/yuji_avatar.png\n\
+-img,60,260: yuji_avatar\n\
 \n\
 "
   );
@@ -106,61 +128,6 @@ static u32 CvtRGB (u8 r1, u8 g1, u8 b1, u8 r2, u8 g2, u8 b2)
 
 static u32 PACK_PIXEL(int r, int g, int b) {
   return CvtRGB(r, g, b, r, g, b);
-}
-
-static void draw_square(int x, int y, int r, int g, int b) {
-  int i = 0, j = 0;
-//printf("xfb is: %lu\n", (unsigned long)xfb);
-
-  if(r == 0 && g == 0 && b == 0) {
-    for(i = 0; i < 20; i++) {
-      for(j = 0; j < 10; j++) {
-        xfb[x+j + (y+i) * 320] = PACK_PIXEL(r, g, b);
-      }
-    }
-  } else {
-//    for(i = 0; i < 20; i++) {
-//      for(j = 0; j < 10; j++) {
-//        xfb[x+j + (y+i) * 320] = PACK_PIXEL(r, g, b);
-//      }
-//    }
-    int r_light = (r+128 <= 255) ? r+128 : 255;
-    int g_light = (g+128 <= 255) ? g+128 : 255;
-    int b_light = (b+128 <= 255) ? b+128 : 255;
-
-    int r_dark = (r-64 >= 0) ? r-64 : 0;
-    int g_dark = (g-64 >= 0) ? g-64 : 0;
-    int b_dark = (b-64 >= 0) ? b-64 : 0;
-
-    // TODO: implement lines and use them.
-    for(j = 0; j < 10; j++) {
-      xfb[x+j + (y) * 320] = PACK_PIXEL(30, 30, 30);
-      xfb[x+j + (y+19) * 320] = PACK_PIXEL(30, 30, 30);
-    }
-    for(j = 1; j < 9; j++) {
-      xfb[x+j + (y+1) * 320] = PACK_PIXEL(r_light, g_light, b_light);
-    }
-    for(j = 2; j < 10; j++) {
-      xfb[x+j + (y+19) * 320] = PACK_PIXEL(r_dark, g_dark, b_dark);
-    }
-    for(i = 2; i < 19; i++) {
-      xfb[x + (y+i) * 320] = PACK_PIXEL(30, 30, 30);
-      xfb[x+1 + (y+i) * 320] = PACK_PIXEL(r_light, g_light, b_light);
-      for(j = 2; j < 9; j++) {
-        xfb[x+j + (y+i) * 320] = PACK_PIXEL(r, g, b);
-      }
-      xfb[x+9 + (y+i) * 320] = PACK_PIXEL(r_dark, g_dark, b_dark);
-    }
-  }
-
-}
-
-static mrb_value draw20x20_640(mrb_state *mrb, mrb_value self) {
-  mrb_int x, y, r, g, b;
-  mrb_get_args(mrb, "iiiii", &x, &y, &r, &g, &b);
-
-  draw_square(x, y, r, g, b);
-  return mrb_nil_value();
 }
 
 static mrb_value init_controller_buffer(mrb_state *mrb, mrb_value self) {
@@ -284,7 +251,9 @@ static mrb_value get_next_button_state(mrb_state *mrb, mrb_value self) {
 }
 
 static mrb_value render_png(mrb_state *mrb, mrb_value self) {
-  // unimplemented
+	GRRLIB_texImg *logo_texture = GRRLIB_LoadTexture(logo_png);
+	GRRLIB_DrawImg(350, 50, logo_texture, 0, 4, 4, GRRLIB_WHITE);
+
   return mrb_nil_value();
 }
 
@@ -295,11 +264,10 @@ static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
 
   mrb_get_args(mrb, "Siiiiii", &str_content, &x, &y, &r, &g, &b, &bg_on);
   unwrapped_content = mrb_str_to_cstr(mrb, str_content);
-  // TODO: get coordinates working
-  //printf("\033[%d;%dH", (y/8), (x/8));
-  //printf("\033[1;1H");
-  //printf("\033[0m");
-  printf("%s", unwrapped_content);
+  u32 colour = (r<<24) | (g<<16) | (b<<8) | 0xFF;
+	// TODO: if bg_on is non-zero, draw black rectangle for bg
+
+  GRRLIB_Printf(x, y, tex_font, colour, 1, "%s", unwrapped_content);
   return mrb_nil_value();
 }
 
@@ -312,14 +280,18 @@ static void wait_for_start() {
   sleep(1);
 }
 
-static mrb_value info(mrb_state *mrb, mrb_value self) {
-	GXRModeObj *rmode = VIDEO_GetPreferredMode(NULL);
-	printf("Screen Resolution: %dx%d\n", rmode->fbWidth, rmode->efbHeight);
+static mrb_value render(mrb_state *mrb, mrb_value self) {
+	GRRLIB_Render();
+  return mrb_nil_value();
+}
+
+static mrb_value clear_screen(mrb_state *mrb, mrb_value self) {
+	GRRLIB_FillScreen(0x0000FFFF);
   return mrb_nil_value();
 }
 
 static mrb_value reset_print_pos(mrb_state *mrb, mrb_value self) {
-  printf("\x1b[0;0H");
+  // not relevant to GRRLIB_Printf
   return mrb_nil_value();
 }
 
@@ -327,7 +299,6 @@ static mrb_value reset_print_pos(mrb_state *mrb, mrb_value self) {
 void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "print_msg", print_msg, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "get_button_masks", get_button_masks, MRB_ARGS_NONE());
-  mrb_define_module_function(mrb, mwii_module, "draw20x20_640", draw20x20_640, MRB_ARGS_REQ(5));
   mrb_define_module_function(mrb, mwii_module, "init_controller_buffer", init_controller_buffer, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "start_controller_reader", start_controller_reader, MRB_ARGS_NONE());
 
@@ -347,6 +318,7 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "content_string", content_string, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "render_png", render_png, MRB_ARGS_REQ(3));
   mrb_define_module_function(mrb, mwii_module, "draw_str", draw_str, MRB_ARGS_REQ(7));
-  mrb_define_module_function(mrb, mwii_module, "info", info, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "render", render, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "clear_screen", clear_screen, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "reset_print_pos", reset_print_pos, MRB_ARGS_NONE());
 }

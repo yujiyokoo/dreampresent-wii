@@ -372,6 +372,8 @@ class Page
       return render_result unless [Commands::NEXT_PAGE, ResultConstants::OK].include?(render_result)
     }
 
+		dc_kos.render
+
     # if waiting for input between sections above did not result in returning
     # input result, get input result here and return it
     return dc_kos.next_or_back

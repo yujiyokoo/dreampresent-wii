@@ -19,7 +19,23 @@ class DcKosRb
   LINE_HEIGHT = 30
   # this understands '\n' as linebreak
   def draw_str(str, x, y, line_height = LINE_HEIGHT, colour, show_bg)
-    rgb = [0, 0, 0]
+    rgb =
+      case colour
+      when 'red'
+         [255, 0, 0]
+      when 'magenta'
+         [255, 0, 255]
+      when 'ltblue'
+         [135, 206, 250]
+      when 'yellow'
+         [255, 255, 0]
+      when 'ltgreen'
+         [144, 238, 144]
+      when 'cyan'
+        [0, 255, 255]
+      else # unknown colours default to white
+         [255, 255, 255]
+      end
 
     bg_on =
       if ['true', 'yes'].include? show_bg
@@ -28,32 +44,8 @@ class DcKosRb
         0
       end
 
-		case colour
-		when 'red'
-			@dc_kos.draw_str("\033[31;1m", 0, 0, *rgb, bg_on)
-		when 'magenta'
-			@dc_kos.draw_str("\033[35;1m", 0, 0, *rgb, bg_on)
-		when 'ltblue'
-			@dc_kos.draw_str("\033[34;1m", 0, 0, *rgb, bg_on)
-		when 'yellow'
-			@dc_kos.draw_str("\033[33;1m", 0, 0, *rgb, bg_on)
-		when 'ltgreen'
-			@dc_kos.draw_str("\033[32;1m", 0, 0, *rgb, bg_on)
-		when 'cyan'
-			@dc_kos.draw_str("\033[36;1m", 0, 0, *rgb, bg_on)
-		else # unknown colours default to white
-			@dc_kos.draw_str("\033[37;1m", 0, 0, *rgb, bg_on)
-		end
-
-    # coordinates are ignored in Wii version now
-    @dc_kos.draw_str("\033[#{y/8};#{x/8}H", 0, 0, *rgb, bg_on)
-    split_lines = str.split("\n")
-    split_lines.each_with_index { |line, idx|
+    str.split("\n").each_with_index { |line, idx|
       @dc_kos.draw_str(line, x, y + (line_height * idx+1), *rgb, bg_on)
-      if split_lines[idx+1] # if there are more lines
-        @dc_kos.draw_str("\n", x, y + (line_height * idx+1), *rgb, bg_on)
-        @dc_kos.draw_str("\033[#{x/8}C", x, y + (line_height * idx+1), *rgb, bg_on)
-      end
     }
   end
 
