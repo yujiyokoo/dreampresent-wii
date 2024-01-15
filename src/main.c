@@ -62,7 +62,6 @@ int main(int argc, char **argv) {
   define_module_functions(mrb, dwii_module);
 
   mrb_load_irep(mrb, program);
-  printf("\n\n\nhello world");
   while(1) {
   }
 

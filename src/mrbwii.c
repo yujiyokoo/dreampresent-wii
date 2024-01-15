@@ -1,5 +1,6 @@
 #include <mruby.h>
 #include <mruby/string.h>
+#include <wiiuse/wpad.h>
 
 static mrb_value print_msg(mrb_state *mrb, mrb_value self) {
   char *unwrapped_content;
@@ -29,7 +30,7 @@ static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
 
 static mrb_value get_button_state(mrb_state *mrb, mrb_value self) {
   // unimplemented
-  return mrb_nil_value();
+  return mrb_fixnum_value(0);
 }
 
 static mrb_value btn_a(mrb_state *mrb, mrb_value self) {
@@ -47,14 +48,37 @@ static mrb_value btn_start(mrb_state *mrb, mrb_value self) {
   return mrb_bool_value(FALSE);
 };
 
-void define_module_functions(mrb_state* mrb, struct RClass* module) {
-  mrb_define_module_function(mrb, module, "print_msg", print_msg, MRB_ARGS_REQ(1));
-  mrb_define_module_function(mrb, module, "content_string", content_string, MRB_ARGS_NONE());
-  mrb_define_module_function(mrb, module, "render_png", render_png, MRB_ARGS_REQ(3));
-  mrb_define_module_function(mrb, module, "draw_str", draw_str, MRB_ARGS_REQ(7));
-  mrb_define_module_function(mrb, module, "get_button_state", get_button_state, MRB_ARGS_NONE());
-  mrb_define_module_function(mrb, module, "btn_a?", btn_a, MRB_ARGS_REQ(1));
-  mrb_define_module_function(mrb, module, "btn_b?", btn_b, MRB_ARGS_REQ(1));
-  mrb_define_module_function(mrb, module, "btn_start?", btn_start, MRB_ARGS_REQ(1));
+static mrb_value dpad_down(mrb_state *mrb, mrb_value self) {
+  mrb_int state;
+  mrb_get_args(mrb, "i", &state);
+
+  return mrb_bool_value(state & PAD_BUTTON_DOWN);
 }
 
+static mrb_value dpad_right(mrb_state *mrb, mrb_value self) {
+  mrb_int state;
+  mrb_get_args(mrb, "i", &state);
+
+  return mrb_bool_value(state & PAD_BUTTON_RIGHT);
+}
+
+static mrb_value dpad_left(mrb_state *mrb, mrb_value self) {
+  mrb_int state;
+  mrb_get_args(mrb, "i", &state);
+
+  return mrb_bool_value(state & PAD_BUTTON_LEFT);
+}
+
+void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
+  mrb_define_module_function(mrb, mwii_module, "print_msg", print_msg, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, mwii_module, "content_string", content_string, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "render_png", render_png, MRB_ARGS_REQ(3));
+  mrb_define_module_function(mrb, mwii_module, "draw_str", draw_str, MRB_ARGS_REQ(7));
+  mrb_define_module_function(mrb, mwii_module, "get_button_state", get_button_state, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "btn_a?", btn_a, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, mwii_module, "btn_b?", btn_b, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, mwii_module, "btn_start?", btn_start, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, mwii_module, "dpad_down?", dpad_down, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, mwii_module, "dpad_right?", dpad_right, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, mwii_module, "dpad_left?", dpad_left, MRB_ARGS_REQ(1));
+}
