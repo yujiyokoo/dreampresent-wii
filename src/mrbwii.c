@@ -15,7 +15,13 @@ static mrb_value print_msg(mrb_state *mrb, mrb_value self) {
 }
 
 static mrb_value content_string(mrb_state *mrb, mrb_value self) {
-  return mrb_str_new_cstr(mrb, "--");
+  return mrb_str_new_cstr(mrb, "--\
+-txt,10,40:Dreampresent \
+-txt,60,30:Developing your Dreamcast apps \
+                        and games with mruby \
+-txt,60,120:Yuji Yokoo - @yujiyokoo \
+-txt,120,260:PRESS START! \
+");
 }
 
 static mrb_value render_png(mrb_state *mrb, mrb_value self) {
