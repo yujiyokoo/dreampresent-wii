@@ -136,4 +136,8 @@ class DcKosRb
   def left_pressed?(previous, current)
     !@dc_kos::dpad_left?(previous) && @dc_kos::dpad_left?(current)
   end
+
+  def render_screen_and_wait
+    @dc_kos::render_screen_and_wait
+  end
 end

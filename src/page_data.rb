@@ -362,19 +362,19 @@ class Page
   end
 
   def show(dc_kos, presentation_state, start_time)
-    puts "------ about to call each on @sections"
-    p @sections
-    @sections.each { |s|
-      render_result = s.render(dc_kos, presentation_state, start_time)
-      puts "-------- section render result: #{ render_result }"
+    while true do
+      puts "------ about to call each on @sections"
+      p @sections
+      @sections.each { |s|
+        render_result = s.render(dc_kos, presentation_state, start_time)
+        puts "-------- section render result: #{ render_result }"
 
-      # return if user pressed PREV, QUIT, etc.
-      return render_result unless [Commands::NEXT_PAGE, ResultConstants::OK].include?(render_result)
-    }
+        # return if user pressed PREV, QUIT, etc.
+        return render_result unless [Commands::NEXT_PAGE, ResultConstants::OK].include?(render_result)
+      }
 
-    # if waiting for input between sections above did not result in returning
-    # input result, get input result here and return it
-    return dc_kos.next_or_back
+      dc_kos.render_screen_and_wait
+    end
   end
 end
 

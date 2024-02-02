@@ -22,16 +22,34 @@ int main(int argc, char **argv) {
   tex_font = GRRLIB_LoadTexture(font_png);
   GRRLIB_InitTileSet(tex_font, 8, 16, 0);
 
+  // console allows usage of printf
+//  void* frameBuffer = (void*)xfb[0];
+//  console_init(frameBuffer,20,20,rmode->fbWidth,rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
+//  VIDEO_Configure(rmode);
+//  VIDEO_SetNextFramebuffer(frameBuffer);
+//  VIDEO_SetBlack(FALSE);
+//  VIDEO_Flush();
+//  VIDEO_WaitVSync();
+
   // pad initialisation
   WPAD_Init();
   WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
 
-  while(1) {
-    GRRLIB_FillScreen(GRRLIB_BLACK);
-    GRRLIB_Printf(5, 25, tex_font, GRRLIB_WHITE, 1, "%s", "Hello, world");
-    GRRLIB_Render();
-    VIDEO_WaitVSync();
-  }
+//  while(1) {
+//    VIDEO_WaitVSync();
+//    GRRLIB_FillScreen(GRRLIB_BLACK);
+//    GRRLIB_Printf(5, 25, tex_font, GRRLIB_WHITE, 1, "%s", "Hello, world");
+//    GRRLIB_Render();
+//  }
+//  printf("\x1b[10;0H");
+//  printf("what's going on?\n");
+
+  mrb_state *mrb = mrb_open();
+  if (!mrb) { return 1; }
+  struct RClass *dwii_module = mrb_define_module(mrb, "DreamPresentWii");
+  define_module_functions(mrb, dwii_module);
+
+  mrb_load_irep(mrb, program);
 
   return 0;
 }
