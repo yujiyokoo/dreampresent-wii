@@ -1,6 +1,7 @@
 # Dreampresent-Wii
 
 This is the port of [Dreampresent](https://github.com/yujiyokoo/dreampresent) to Nintendo Wii.
+It is still a Work-In-Progress, and not many features have been implemented.
 
 ## Prerequisites
 
