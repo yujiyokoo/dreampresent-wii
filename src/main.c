@@ -11,8 +11,8 @@
 #include "mrbwii.h"
 #include "font_png.h"
 
-#define GRRLIB_WHITE   0xFFFFFFFF
-#define GRRLIB_BLACK   0x3333FFFF
+// #define GRRLIB_WHITE   0xFFFFFFFF
+// #define GRRLIB_BLACK   0x3333FFFF
 
 extern const uint8_t program[];
 
@@ -48,6 +48,7 @@ int main(int argc, char **argv) {
   if (!mrb) { return 1; }
   struct RClass *dwii_module = mrb_define_module(mrb, "DreamPresentWii");
   define_module_functions(mrb, dwii_module);
+printf("after define_module_functions xfb: %lx\n", (unsigned long)xfb);
 
   mrb_load_irep(mrb, program);
 

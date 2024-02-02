@@ -232,15 +232,15 @@ class PageBaseContent
   def initialize(path, page_count)
     @page_count = page_count
     @path = String(path).strip
-    puts "-------- Background. path is: "
-    p @path
+    #puts "-------- Background. path is: "
+    #p @path
   end
 
   def render(dc_kos, presentation_state, start_time)
     if @path && !@path.empty?
       dc_kos.render_png(@path, 0, 0)
     else
-      puts "Rendering background image with no path. Skipping."
+      #puts "Rendering background image with no path. Skipping."
     end
 
     render_timer_progress(dc_kos, start_time, presentation_state.time_adjustment)
@@ -268,7 +268,7 @@ class PageBaseContent
     PROGRESS_Y_POS = 440
 
     pos_x = ((Time.now.to_i - start_time.to_i + time_adjustment) / DURATION * PROGRESS_LEN).to_i
-    puts "#################### start_time: #{start_time}, adj: #{time_adjustment}, now: #{Time.now}, pos_x: #{pos_x}"
+    #puts "#################### start_time: #{start_time}, adj: #{time_adjustment}, now: #{Time.now}, pos_x: #{pos_x}"
     pos_x = PROGRESS_LEN if pos_x > PROGRESS_LEN
     pos_x = 0 if pos_x < 0
 
@@ -484,8 +484,8 @@ class Parser
           background_sections + other_sections
         end
 
-      puts "==== sorted page:"
-      p sorted_page
+      #puts "==== sorted page:"
+      #p sorted_page
       Page.new(sorted_page)
     }
   end
