@@ -3,6 +3,7 @@
 #include <mruby.h>
 #include <mruby/string.h>
 #include <wiiuse/wpad.h>
+#include "content_txt.h"
 
 extern GRRLIB_texImg *tex_font;
 
@@ -19,12 +20,7 @@ static mrb_value print_msg(mrb_state *mrb, mrb_value self) {
 }
 
 static mrb_value content_string(mrb_state *mrb, mrb_value self) {
-  return mrb_str_new_cstr(mrb, "=\n\
--txt,60,30:Developing your Dreamcast apps\n\
-                        and games with mruby\n\
--txt,60,120:Yuji Yokoo - @yujiyokoo\n\
--txt,120,260:PRESS START!\n\
-");
+  return mrb_str_new_cstr(mrb, (const char*)content_txt);
 }
 
 static mrb_value render_screen_and_wait(mrb_state *mrb, mrb_value self) {
