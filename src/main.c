@@ -32,8 +32,9 @@ int main(int argc, char **argv) {
 //  VIDEO_WaitVSync();
 
   // pad initialisation
-  WPAD_Init();
-  WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
+  //WPAD_Init();
+  PAD_Init();
+  //WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);
 
 //  while(1) {
 //    VIDEO_WaitVSync();

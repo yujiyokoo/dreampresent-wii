@@ -46,8 +46,9 @@ static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
 }
 
 static mrb_value get_button_state(mrb_state *mrb, mrb_value self) {
-  // unimplemented
-  return mrb_fixnum_value(0);
+  PAD_ScanPads();
+  u16 btns = PAD_ButtonsHeld(0);
+  return mrb_fixnum_value(btns);
 }
 
 static mrb_value btn_a(mrb_state *mrb, mrb_value self) {
@@ -61,8 +62,10 @@ static mrb_value btn_b(mrb_state *mrb, mrb_value self) {
 }
 
 static mrb_value btn_start(mrb_state *mrb, mrb_value self) {
-  // unimplemented
-  return mrb_bool_value(FALSE);
+  mrb_int state;
+  mrb_get_args(mrb, "i", &state);
+
+  return mrb_bool_value(state & PAD_BUTTON_START);
 };
 
 static mrb_value dpad_down(mrb_state *mrb, mrb_value self) {
