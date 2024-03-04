@@ -74,9 +74,17 @@ class DcKosRb
   end
 
   def next_or_back
+    #i = 0
     previous_state = @dc_kos::get_button_state
     while true do
       button_state = @dc_kos::get_button_state
+      #i = i + 1
+      #draw_str("test #{i}", 0, 0, LINE_HEIGHT, 'red', false)
+      #draw_str("button_state #{button_state}", 0, 30, LINE_HEIGHT, 'red', false)
+      #draw_str("start_or_a #{ start_or_a_pressed?(previous_state, button_state)}", 0, 60, LINE_HEIGHT, 'red', false)
+      #draw_str("previous #{ @dc_kos::btn_start?(previous_state)}", 0, 90, LINE_HEIGHT, 'red', false)
+      #draw_str("current #{ @dc_kos::btn_start?(button_state)}", 0, 120, LINE_HEIGHT, 'red', false)
+      #@dc_kos::render_screen_and_wait
 
       # NOTE order is important here.
 
@@ -114,6 +122,10 @@ class DcKosRb
   def switch_video_mode_combination?(previous, current)
     !(@dc_kos::dpad_down?(previous) && @dc_kos::btn_a?(previous)) &&
       (@dc_kos::dpad_down?(current) && @dc_kos::btn_a?(current))
+  end
+
+  def btn_start?(state)
+    @dc_kos::btn_start?(previous)
   end
 
   def start_or_a_pressed?(previous, current)
