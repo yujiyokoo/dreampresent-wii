@@ -1,6 +1,7 @@
 #include <grrlib.h>
 
-#include <wiiuse/wpad.h>
+// #include <wiiuse/wpad.h>
+#include <ogc/system.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,8 +24,27 @@ int main(int argc, char **argv) {
   GRRLIB_InitTileSet(tex_font, 8, 16, 0);
 
   // console allows usage of printf
-//  void* frameBuffer = (void*)xfb[0];
-//  console_init(frameBuffer,20,20,rmode->fbWidth,rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
+  void* frameBuffer = (void*)xfb[0];
+  console_init(frameBuffer,20,20,rmode->fbWidth,rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
+  SYS_STDIO_Report(true);
+	// Output directly to Dolphin emulated UART
+	SYS_Report("Hello UART\r");
+
+	// Redirect stderr to UART
+	SYS_STDIO_Report(false);
+
+	fprintf(stderr,"stderr: Hello stderr UART!\r");
+
+	// Redirect both stdio and stderr to UART
+	SYS_STDIO_Report(true);
+
+	fprintf(stderr,"stderr: Hello stderr UART!\r");
+	fprintf(stdout,"stdout: Hello stdout UART!\r");
+	printf("stdout: Hello printf UART!\r");
+	printf("stdout: Hello printf UART again!\r");
+    printf("stdout: Hello printf!\r");
+    SYS_Report("Hello from OSReport!\r");
+
 //  VIDEO_Configure(rmode);
 //  VIDEO_SetNextFramebuffer(frameBuffer);
 //  VIDEO_SetBlack(FALSE);
