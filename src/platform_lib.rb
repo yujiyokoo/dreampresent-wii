@@ -80,7 +80,6 @@ class DcKosRb
   end
 
   def next_or_back(clear_screen_on_nav = true)
-  puts "next or back called"
     #i = 0
     previous_state = @dc_kos::get_button_state
     while true do
@@ -171,5 +170,9 @@ class DcKosRb
 
   def clear_obj_buffer
     @obj_buffer = []
+  end
+
+  def push_obj_buffer(obj)
+    @obj_buffer.push(obj)
   end
 end
