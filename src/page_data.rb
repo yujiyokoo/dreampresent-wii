@@ -279,7 +279,7 @@ end
 # Wait for A or Start in page to go to next section
 class WaitButtonContent
   def render(dc_kos, _presentation_state, time_now)
-    key_input = dc_kos.next_or_back
+    key_input = dc_kos.next_or_back(false)
 
     if key_input == Commands::NEXT_PAGE
       ResultConstants::OK
@@ -362,6 +362,7 @@ class Page
   end
 
   def show(dc_kos, presentation_state, start_time)
+    dc_kos.render_screen_and_wait
     puts "------ about to call each on @sections"
     p @sections
     @sections.each_with_index { |s, idx|

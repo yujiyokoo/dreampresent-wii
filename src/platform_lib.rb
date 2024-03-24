@@ -14,6 +14,7 @@ class DcKosRb
 
   def initialize(dc_kos)
     @dc_kos = dc_kos
+    @obj_buffer = []
   end
 
   LINE_HEIGHT = 30
@@ -46,7 +47,12 @@ class DcKosRb
       end
 
     str.split("\n").each_with_index { |line, idx|
-      @dc_kos.draw_str(line, x, y + (line_height * idx+1), *rgb, bg_on)
+      dc_kos = @dc_kos
+      @obj_buffer.push Object.new.tap { |o|
+        o.define_singleton_method(:render) do
+          dc_kos.draw_str(line, x, y + (line_height * idx+1), *rgb, bg_on)
+        end
+      }
     }
   end
 
@@ -73,7 +79,8 @@ class DcKosRb
     end
   end
 
-  def next_or_back
+  def next_or_back(clear_screen_on_nav = true)
+  puts "next or back called"
     #i = 0
     previous_state = @dc_kos::get_button_state
     while true do
@@ -84,7 +91,7 @@ class DcKosRb
       #draw_str("start_or_a #{ start_or_a_pressed?(previous_state, button_state)}", 0, 60, LINE_HEIGHT, 'red', false)
       #draw_str("previous #{ @dc_kos::btn_start?(previous_state)}", 0, 90, LINE_HEIGHT, 'red', false)
       #draw_str("current #{ @dc_kos::btn_start?(button_state)}", 0, 120, LINE_HEIGHT, 'red', false)
-      #@dc_kos::render_screen_and_wait
+      render_screen_and_wait
 
       # NOTE order is important here.
 
@@ -93,10 +100,16 @@ class DcKosRb
       return SWITCH_VIDEO_MODE if switch_video_mode_combination?(previous_state, button_state)
 
       # press STRAT or A to go forward
-      return NEXT_PAGE if start_or_a_pressed?(previous_state, button_state)
+      if start_or_a_pressed?(previous_state, button_state)
+        clear_obj_buffer if clear_screen_on_nav
+        return NEXT_PAGE
+      end
 
       # press B to go back
-      return PREVIOUS_PAGE if b_pressed?(previous_state, button_state)
+      if b_pressed?(previous_state, button_state)
+        clear_obj_buffer if clear_screen_on_nav
+        return PREVIOUS_PAGE
+      end
 
       # left and right on dpad for skipping or rewinding the time indicator
       return FWD if right_pressed?(previous_state, button_state)
@@ -150,6 +163,13 @@ class DcKosRb
   end
 
   def render_screen_and_wait
+    @obj_buffer.each do |obj|
+      obj.render
+    end
     @dc_kos::render_screen_and_wait
+  end
+
+  def clear_obj_buffer
+    @obj_buffer = []
   end
 end
