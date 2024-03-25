@@ -1,5 +1,5 @@
 =
--bkg: /rd/bg_dark.png
+-bkg: bg_dark_png
 -txt,60,30:Developing your Dreamcast apps
                         and games with mruby
 -txt,60,120:Yuji Yokoo - @yujiyokoo
@@ -28,7 +28,7 @@
     developer (MFC/Win32)
   From: Tokyo, Japan
   Lives in: Adelaide, South Australia
--img,60,260: /rd/yuji_avatar.png
+-img,60,260: yuji_avatar_png
 
 = This application
 -txt,60,60:Dreampresent
@@ -42,7 +42,7 @@
 -txt,60,180: - It's a live demo
 
 = What is Dreamcast?
--img,40,50: /rd/dreamcast_photo.png
+-img,40,50: dreamcast_photo_png
 
 = What is Dreamcast?
 -txt,60,30: - The best video game console from Sega
@@ -324,7 +324,7 @@ However, emulators are handy too.
 
 = Console (emulator/ip/serial)
 -txt,40,30: with emulators, console output is available
--img,40,70: /rd/emulator_console.png
+-img,40,70: emulator_console_png
 
 = Getting the program onto Dreamcast
 -wait:
@@ -354,17 +354,17 @@ Serial cables: You can't buy them. Build.
 -txt,40,70:The SD card reader has a connector:
 
 -wait:
--img,0,0: /rd/DCSerialConnector.png
+-img,0,0: DCSerialConnector_png
 
 = Building the serial cable
 -txt,40,40:I built my cable once.
 -txt,40,70:The SD card reader has a connector.
 -txt,40,100:Finished (poorly done) connector:
 -wait:
--img,110,60: /rd/soldered_connector.png
+-img,110,60: soldered_connector_png
 
 = Finished cable
--img,30,30: /rd/DCToSerial.png
+-img,30,30: DCToSerial_png
 
 =
 -txt,80,200:It was unstable, but eventually worked.
