@@ -168,6 +168,15 @@ class DcKosRb
     @dc_kos::render_screen_and_wait
   end
 
+  def render_png(img_path, x, y)
+    dc_kos = @dc_kos
+      @obj_buffer.push Object.new.tap { |o|
+        o.define_singleton_method(:render) do
+          dc_kos.render_png(img_path, x, y)
+        end
+      }
+  end
+
   def clear_obj_buffer
     @obj_buffer = []
   end
