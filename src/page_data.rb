@@ -259,7 +259,7 @@ class PageBaseContent
         (page_index / (page_count - 1) * PAGES_BAR_LEN).to_i
       end
 
-    dc_kos.render_png("/rd/swirl_blue_32x28.png", pos_x, PAGES_Y_POS)
+    dc_kos.render_png("swirl_blue_32x28_png", pos_x, PAGES_Y_POS)
   end
 
   def render_timer_progress(dc_kos, start_time, time_adjustment)
@@ -272,7 +272,7 @@ class PageBaseContent
     pos_x = PROGRESS_LEN if pos_x > PROGRESS_LEN
     pos_x = 0 if pos_x < 0
 
-    dc_kos.render_png("/rd/mruby_logo_32x35.png", pos_x, PROGRESS_Y_POS)
+    dc_kos.render_png("mruby_logo_32x35_png", pos_x, PROGRESS_Y_POS)
   end
 end
 

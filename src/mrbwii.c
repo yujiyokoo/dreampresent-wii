@@ -4,6 +4,7 @@
 #include <mruby/string.h>
 #include <wiiuse/wpad.h>
 #include "content_txt.h"
+#include "images.h"
 
 extern GRRLIB_texImg *tex_font;
 
@@ -29,8 +30,21 @@ static mrb_value render_screen_and_wait(mrb_state *mrb, mrb_value self) {
   return mrb_nil_value();
 }
 
+#define GRRLIB_WHITE   0xFFFFFFFF
 static mrb_value render_png(mrb_state *mrb, mrb_value self) {
-  // unimplemented
+  mrb_value png_name;
+  mrb_int base_x, base_y;
+  char *c_png_name;
+
+  mrb_get_args(mrb, "Sii", &png_name, &base_x, &base_y);
+  c_png_name = mrb_str_to_cstr(mrb, png_name);
+  printf("---- rendering png: %s \n", c_png_name);
+
+  const uint8_t *png_asset = find_image_asset(c_png_name);
+
+  // TODO: Seems like images should be only loaded once?
+  GRRLIB_texImg *tex_png = GRRLIB_LoadTexture(png_asset);
+  GRRLIB_DrawImg(base_x, base_y, tex_png, 0, 1, 1, GRRLIB_WHITE);
   return mrb_nil_value();
 }
 
