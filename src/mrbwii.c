@@ -1,6 +1,8 @@
 #include <grrlib.h>
 
 #include <mruby.h>
+#include <mruby/class.h>
+#include <mruby/data.h>
 #include <mruby/string.h>
 #include <wiiuse/wpad.h>
 #include "content_txt.h"
@@ -38,7 +40,7 @@ static mrb_value render_png(mrb_state *mrb, mrb_value self) {
 
   mrb_get_args(mrb, "Sii", &png_name, &base_x, &base_y);
   c_png_name = mrb_str_to_cstr(mrb, png_name);
-  printf("---- rendering png: %s \n", c_png_name);
+  printf("---- rendering png: %s \r", c_png_name);
 
   const uint8_t *png_asset = find_image_asset(c_png_name);
 
@@ -145,3 +147,47 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "draw_horizontal_line", draw_horizontal_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, mwii_module, "draw_vertical_line", draw_vertical_line, MRB_ARGS_REQ(6));
 }
+
+// DreamPresentPng
+
+static void mrb_dp_png_free(mrb_state *mrb, void *p) {
+  GRRLIB_FreeTexture((GRRLIB_texImg *)p);
+}
+
+static const struct mrb_data_type mrb_dp_png_data_type = {
+  "$i_mrb_dp_png_data_type", mrb_dp_png_free
+};
+
+static mrb_value render_dp_png(mrb_state *mrb, mrb_value self) {
+  mrb_int x, y;
+  mrb_get_args(mrb, "ii", &x, &y);
+  GRRLIB_texImg *data = (GRRLIB_texImg*)DATA_PTR(self);
+
+  GRRLIB_DrawImg(x, y, data, 0, 1, 1, GRRLIB_WHITE);
+
+  return mrb_nil_value();
+}
+
+static mrb_value find_and_load_png(mrb_state *mrb, mrb_value self) {
+  mrb_value png_name;
+  char *c_png_name;
+
+  mrb_get_args(mrb, "S", &png_name);
+  c_png_name = mrb_str_to_cstr(mrb, png_name);
+
+  const uint8_t *png_asset = find_image_asset(c_png_name);
+
+  GRRLIB_texImg *tex_png = GRRLIB_LoadTexture(png_asset);
+  mrb_data_init(self, tex_png, &mrb_dp_png_data_type);
+
+  return self;
+}
+
+void dream_present_png_init(mrb_state *mrb) {
+  struct RClass *dp_png_class = mrb_define_class(mrb, "DreamPresentPng", mrb->object_class);
+  MRB_SET_INSTANCE_TT(dp_png_class, MRB_TT_DATA);
+
+  mrb_define_method(mrb, dp_png_class, "initialize", find_and_load_png, MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, dp_png_class, "render", render_dp_png, MRB_ARGS_REQ(2));
+}
+

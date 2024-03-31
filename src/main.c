@@ -69,6 +69,7 @@ int main(int argc, char **argv) {
   if (!mrb) { return 1; }
   struct RClass *dwii_module = mrb_define_module(mrb, "DreamPresentWii");
   define_module_functions(mrb, dwii_module);
+  dream_present_png_init(mrb);
 
   mrb_load_irep(mrb, program);
 
