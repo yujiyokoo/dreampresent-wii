@@ -10,6 +10,18 @@ class ResultConstants
   OK = 0
 end
 
+class PositionedPng
+  def initialize(name, x, y)
+    @x = x
+    @y = y
+    @png = DreamPresentPng.new(name)
+  end
+
+  def render
+    @png.render(@x, @y)
+  end
+end
+
 class PageTitleContent
   def initialize(content)
     @content = content
@@ -221,7 +233,8 @@ class ImageContent
   end
 
   def render(dc_kos, _presentation_state, time_now)
-    dc_kos.render_png(@path, @x, @y)
+    # dc_kos.render_png(@path, @x, @y)
+    dc_kos.push_obj_buffer(PositionedPng.new(@path, @x, @y))
     ResultConstants::OK
   end
 end
@@ -238,7 +251,8 @@ class PageBaseContent
 
   def render(dc_kos, presentation_state, start_time)
     if @path && !@path.empty?
-      dc_kos.render_png(@path, 0, 0)
+      # dc_kos.render_png(@path, 0, 0)
+      dc_kos.push_obj_buffer(PositionedPng.new(@path, 0, 0))
     else
       puts "Rendering background image with no path. Skipping."
     end
@@ -259,7 +273,8 @@ class PageBaseContent
         (page_index / (page_count - 1) * PAGES_BAR_LEN).to_i
       end
 
-    dc_kos.render_png("swirl_blue_32x28_png", pos_x, PAGES_Y_POS)
+    # dc_kos.render_png("swirl_blue_32x28_png", pos_x, PAGES_Y_POS)
+    dc_kos.push_obj_buffer(PositionedPng.new("swirl_blue_32x28_png", pos_x, PAGES_Y_POS))
   end
 
   def render_timer_progress(dc_kos, start_time, time_adjustment)
@@ -272,7 +287,7 @@ class PageBaseContent
     pos_x = PROGRESS_LEN if pos_x > PROGRESS_LEN
     pos_x = 0 if pos_x < 0
 
-    dc_kos.render_png("mruby_logo_32x35_png", pos_x, PROGRESS_Y_POS)
+    dc_kos.push_obj_buffer(PositionedPng.new("mruby_logo_32x35_png", pos_x, PROGRESS_Y_POS))
   end
 end
 
