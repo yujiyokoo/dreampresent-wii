@@ -343,7 +343,16 @@ class LineContent
 
     elsif @direction == :vertical
       (0...@width).each do |line_num|
-        dc_kos.draw_vertical_line(@x + line_num, @y, @len, r, g, b)
+        x = @x
+        y = @y
+        len = @len
+        dc_kos.push_obj_buffer(
+          Object.new.tap { |o|
+            o.define_singleton_method(:render) do
+              dc_kos.draw_vertical_line(x + line_num, y, len, r, g, b)
+            end
+          }
+        )
       end
     end
     ResultConstants::OK
