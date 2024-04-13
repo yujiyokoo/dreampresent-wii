@@ -69,13 +69,17 @@ static mrb_value get_button_state(mrb_state *mrb, mrb_value self) {
 }
 
 static mrb_value btn_a(mrb_state *mrb, mrb_value self) {
-  // unimplemented
-  return mrb_bool_value(FALSE);
+  mrb_int state;
+  mrb_get_args(mrb, "i", &state);
+
+  return mrb_bool_value(state & PAD_BUTTON_A);
 }
 
 static mrb_value btn_b(mrb_state *mrb, mrb_value self) {
-  // unimplemented
-  return mrb_bool_value(FALSE);
+  mrb_int state;
+  mrb_get_args(mrb, "i", &state);
+
+  return mrb_bool_value(state & PAD_BUTTON_B);
 }
 
 static mrb_value btn_start(mrb_state *mrb, mrb_value self) {
@@ -104,6 +108,13 @@ static mrb_value dpad_left(mrb_state *mrb, mrb_value self) {
   mrb_get_args(mrb, "i", &state);
 
   return mrb_bool_value(state & PAD_BUTTON_LEFT);
+}
+
+static mrb_value dpad_up(mrb_state *mrb, mrb_value self) {
+  mrb_int state;
+  mrb_get_args(mrb, "i", &state);
+
+  return mrb_bool_value(state & PAD_BUTTON_UP);
 }
 
 static u32 PACK_PIXEL(u8 r, u8 g, u8 b, u8 a) {
@@ -151,6 +162,7 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "dpad_down?", dpad_down, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "dpad_right?", dpad_right, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "dpad_left?", dpad_left, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, mwii_module, "dpad_up?", dpad_up, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "render_screen_and_wait", render_screen_and_wait, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "draw_horizontal_line", draw_horizontal_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, mwii_module, "draw_vertical_line", draw_vertical_line, MRB_ARGS_REQ(6));
