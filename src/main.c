@@ -26,9 +26,9 @@ int main(int argc, char **argv) {
   tex_font = GRRLIB_LoadTexture(font_png);
   GRRLIB_InitTileSet(tex_font, 8, 16, 0);
 
-  // console allows usage of printf
-  void* frameBuffer = (void*)xfb[0];
-  console_init(frameBuffer,20,20,rmode->fbWidth,rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
+  // console allows usage of printf, but may cause issues with terminal output on the emulator
+  // void* frameBuffer = (void*)xfb[0];
+  // console_init(frameBuffer,20,20,rmode->fbWidth,rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
   SYS_STDIO_Report(true);
 	// Output directly to Dolphin emulated UART
 	SYS_Report("Hello UART\r");

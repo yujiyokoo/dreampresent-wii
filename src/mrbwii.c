@@ -51,6 +51,10 @@ static mrb_value render_png(mrb_state *mrb, mrb_value self) {
   return mrb_nil_value();
 }
 
+static u32 build_rgba(u8 r, u8 g, u8 b, u8 a) {
+  return ((u32)r << 24) | (((u32)g << 16) ) | (((u32)b << 8) ) | ((u32)a );
+}
+
 static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
   char *unwrapped_content;
   mrb_value str_content;
@@ -58,7 +62,10 @@ static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
 
   mrb_get_args(mrb, "Siiiiii", &str_content, &x, &y, &r, &g, &b, &bg_on);
   unwrapped_content = mrb_str_to_cstr(mrb, str_content);
-  GRRLIB_Printf(x, y, tex_font, 0xFFFFFFFF, 1, unwrapped_content);
+
+  u32 rgba = build_rgba((u8)r, (u8)g, (u8)b, 255);
+
+  GRRLIB_Printf(x, y, tex_font, rgba, 1, unwrapped_content);
   return mrb_nil_value();
 }
 
@@ -117,15 +124,11 @@ static mrb_value dpad_up(mrb_state *mrb, mrb_value self) {
   return mrb_bool_value(state & PAD_BUTTON_UP);
 }
 
-static u32 PACK_PIXEL(u8 r, u8 g, u8 b, u8 a) {
-  return (r << 24) | (g << 16) | (b << 8) | a;
-}
-
 static mrb_value draw_horizontal_line(mrb_state *mrb, mrb_value self) {
   mrb_int x, y, len, r, g, b;
   mrb_get_args(mrb, "iiiiii", &x, &y, &len, &r, &g, &b);
 
-  u32 rgb = PACK_PIXEL(r, g, b, 255);
+  u32 rgb = build_rgba(r, g, b, 255);
 
   GRRLIB_Line(x, y, x + len, y, rgb);
 
@@ -136,7 +139,7 @@ static mrb_value draw_vertical_line(mrb_state *mrb, mrb_value self) {
   mrb_int x, y, len, r, g, b;
   mrb_get_args(mrb, "iiiiii", &x, &y, &len, &r, &g, &b);
 
-  u32 rgb = PACK_PIXEL(r, g, b, 255);
+  u32 rgb = build_rgba(r, g, b, 255);
 
   GRRLIB_Line(x, y, x, y + len, rgb);
 
