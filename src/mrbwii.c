@@ -1,5 +1,6 @@
 #include <grrlib.h>
 
+#include <ogc/lwp_watchdog.h>
 #include <mruby.h>
 #include <mruby/class.h>
 #include <mruby/data.h>
@@ -131,6 +132,13 @@ static mrb_value draw_vertical_line(mrb_state *mrb, mrb_value self) {
   return mrb_nil_value();
 }
 
+static mrb_value int_time(mrb_state *mrb, mrb_value self) {
+  u64 curr_time = gettime();
+  u32 curr_sec = ticks_to_millisecs(curr_time) / 1000;
+  printf("curr_sec: %d\r", curr_sec);
+  return mrb_int_value(mrb, curr_sec);
+}
+
 void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "print_msg", print_msg, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "content_string", content_string, MRB_ARGS_NONE());
@@ -146,6 +154,7 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "render_screen_and_wait", render_screen_and_wait, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "draw_horizontal_line", draw_horizontal_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, mwii_module, "draw_vertical_line", draw_vertical_line, MRB_ARGS_REQ(6));
+  mrb_define_module_function(mrb, mwii_module, "int_time", int_time, MRB_ARGS_NONE());
 }
 
 // DreamPresentPng

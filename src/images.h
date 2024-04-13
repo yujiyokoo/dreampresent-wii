@@ -8,7 +8,7 @@
 #include "emulator_console_png.h"
 #include "font_png.h"
 #include "logo_png.h"
-#include "mruby_logo_32x35_png.h"
+#include "mruby_logo_32x32_png.h"
 #include "soldered_connector_png.h"
 #include "swirl_blue_32x28_png.h"
 #include "yuji_avatar_png.h"
@@ -28,8 +28,8 @@ const uint8_t *find_image_asset(char* image_name) {
     return emulator_console_png;
   } else if(strcmp(image_name, "font_png") == 0) {
     return font_png;
-  } else if(strcmp(image_name, "mruby_logo_32x35_png") == 0) {
-    return mruby_logo_32x35_png;
+  } else if(strcmp(image_name, "mruby_logo_32x32_png") == 0) {
+    return mruby_logo_32x32_png;
   } else if(strcmp(image_name, "soldered_connector_png") == 0) {
     return soldered_connector_png;
   } else if(strcmp(image_name, "swirl_blue_32x28_png") == 0) {

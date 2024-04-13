@@ -282,12 +282,13 @@ class PageBaseContent
     PROGRESS_LEN = 640 - 32
     PROGRESS_Y_POS = 440
 
-    pos_x = ((Time.now.to_i - start_time.to_i + time_adjustment) / DURATION * PROGRESS_LEN).to_i
+    pos_x = ((Time.now.to_i - start_time.to_i + time_adjustment) * PROGRESS_LEN / DURATION).to_i
     puts "#################### start_time: #{start_time}, adj: #{time_adjustment}, now: #{Time.now}, pos_x: #{pos_x}"
+    puts "((#{Time.now.to_i} - #{start_time.to_i} + #{time_adjustment}) * #{PROGRESS_LEN} / #{DURATION}).to_i"
     pos_x = PROGRESS_LEN if pos_x > PROGRESS_LEN
     pos_x = 0 if pos_x < 0
 
-    dc_kos.push_obj_buffer(PositionedPng.new("mruby_logo_32x35_png", pos_x, PROGRESS_Y_POS))
+    dc_kos.push_obj_buffer(PositionedPng.new("mruby_logo_32x32_png", pos_x, PROGRESS_Y_POS))
   end
 end
 

@@ -13,6 +13,12 @@ module Kernel
   end
 end
 
+class Time
+  def self.now
+    Time.at(DreamPresentWii.int_time)
+  end
+end
+
 begin
   # DreamPresentWii.print_msg 'Starting presentation.'
   DreamPresentWii.print_msg "test message from print_msg"

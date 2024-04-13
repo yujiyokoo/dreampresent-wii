@@ -2,9 +2,12 @@
 
 // #include <wiiuse/wpad.h>
 #include <ogc/system.h>
+#include <ogc/lwp_watchdog.h>
+#include <asndlib.h>
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <mruby.h>
 #include <mruby/irep.h>
 #include <mruby/string.h>
@@ -42,8 +45,8 @@ int main(int argc, char **argv) {
 	fprintf(stdout,"stdout: Hello stdout UART!\r");
 	printf("stdout: Hello printf UART!\r");
 	printf("stdout: Hello printf UART again!\r");
-    printf("stdout: Hello printf!\r");
-    SYS_Report("Hello from OSReport!\r");
+  printf("stdout: Hello printf!\r");
+  SYS_Report("Hello from OSReport!\r");
 
 //  VIDEO_Configure(rmode);
 //  VIDEO_SetNextFramebuffer(frameBuffer);
