@@ -65,7 +65,7 @@ static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
 
   u32 rgba = build_rgba((u8)r, (u8)g, (u8)b, 255);
 
-  GRRLIB_Printf(x, y, tex_font, rgba, 1, unwrapped_content);
+  GRRLIB_Printf(x, y, tex_font, rgba, 1.5, unwrapped_content);
   return mrb_nil_value();
 }
 
