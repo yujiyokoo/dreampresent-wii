@@ -65,6 +65,11 @@ static mrb_value draw_str(mrb_state *mrb, mrb_value self) {
 
   u32 rgba = build_rgba((u8)r, (u8)g, (u8)b, 255);
 
+  // render black background of the text width * the height of 16 x 1.5
+  if (bg_on) {
+    GRRLIB_Rectangle(x, y, (int)(strlen(unwrapped_content) * (8*1.5)), (int)((16*1.5)), build_rgba(0, 0, 0, 255), true);
+  }
+
   GRRLIB_Printf(x, y, tex_font, rgba, 1.5, unwrapped_content);
   return mrb_nil_value();
 }
