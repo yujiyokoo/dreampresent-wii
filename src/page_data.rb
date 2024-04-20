@@ -312,7 +312,7 @@ class LineContent
   end
 
   def render(dc_kos, _presentation_state, time_now)
-    # currently supports 'red', 'black'
+    # currently supports 'red', 'yellow', 'black'
     # everything else will be white
     # TODO: let's make a colour lookup class... See DcKos
     r, g, b =
@@ -327,37 +327,27 @@ class LineContent
         [255, 255, 255]
       end
 
-    if @direction == :horizontal
-      (0...@width).each do |line_num|
-        #dc_kos.draw_horizontal_line(@x, @y + line_num, @len, r, g, b)
-        x = @x
-        y = @y
-        len = @len
-        dc_kos.push_obj_buffer(
-          Object.new.tap { |o|
-            o.define_singleton_method(:render) do
-              dc_kos.draw_horizontal_line(x, y + line_num, len, r, g, b)
-            end
-          }
-        )
-      end
-
-    elsif @direction == :vertical
-      (0...@width).each do |line_num|
-        x = @x
-        y = @y
-        len = @len
-        dc_kos.push_obj_buffer(
-          Object.new.tap { |o|
-            o.define_singleton_method(:render) do
-              dc_kos.draw_vertical_line(x + line_num, y, len, r, g, b)
-            end
-          }
-        )
-      end
-    end
+    dc_kos.push_obj_buffer(DrawLine.new(dc_kos, @direction, @width, @x, @y, @len, r, g, b))
     ResultConstants::OK
   end
+end
+
+class DrawLine
+  def initialize(dc_kos, direction, width, x, y, len, r, g, b)
+    @dc_kos, @direction, @width, @x, @y, @len, @r, @g, @b = dc_kos, direction, width, x, y, len, r, g, b
+  end
+
+  def render
+    if @direction == :horizontal
+      (0...@width).each do |line_num|
+        @dc_kos.draw_horizontal_line(@x, @y + line_num, @len, @r, @g, @b)
+      end
+    else
+      (0...@width).each do |line_num|
+        @dc_kos.draw_vertical_line(@x + line_num, @y, @len, @r, @g, @b)
+      end
+    end
+  end 
 end
 
 class TimerReset
