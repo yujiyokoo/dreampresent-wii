@@ -327,6 +327,8 @@ class LineContent
       end
 
     dc_kos.push_obj_buffer(DrawLine.new(dc_kos, @direction, @width, @x, @y, @len, r, g, b))
+
+    ResultConstants::OK
   end
 end
 
@@ -345,9 +347,7 @@ class DrawLine
         @dc_kos.draw_vertical_line(@x + line_num, @y, @len, @r, @g, @b)
       end
     end
-
-    ResultConstants::OK
-  end 
+  end
 end
 
 class TimerReset
