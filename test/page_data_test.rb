@@ -20,6 +20,16 @@ class FakeDcKos
   def draw_vertical_line(*args)
     @calls.push([:draw_vertical_line, *args])
   end
+
+  def content_string
+    "content string"
+  end
+end
+
+class FakeParser
+  def parse(str)
+    "parsed " + str
+  end
 end
 
 describe DrawLine do
@@ -40,3 +50,10 @@ describe DrawLine do
   end
 end
 
+describe PageData do
+  describe "#all" do
+    it "parses content string and return the result" do
+      assert_equal "parsed content string", PageData.new(FakeDcKos.new, FakeParser.new).all
+    end
+  end
+end

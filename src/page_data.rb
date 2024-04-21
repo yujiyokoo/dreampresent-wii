@@ -518,12 +518,15 @@ class Parser
 end
 
 class PageData
-  def initialize(dc_kos)
+  attr_reader :parser
+
+  def initialize(dc_kos, parser)
     @dc_kos = dc_kos
+    @parser = parser
   end
 
   def all
     content_str = @dc_kos.content_string
-    Parser.new.parse(content_str)
+    parser.parse(content_str)
   end
 end

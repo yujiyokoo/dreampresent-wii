@@ -21,10 +21,7 @@ end
 
 begin
   # DreamPresentWii.print_msg 'Starting presentation.'
-  DreamPresentWii.print_msg "test message from print_msg"
-  puts "test message from puts"
-  p "test message from p"
-  Dreampresent.new(DcKosRb.new(DreamPresentWii)).start
+  Dreampresent.new(DcKosRb.new(DreamPresentWii), Parser.new).start
 rescue => ex
   # Note backtrace is only available when you pass -g to mrbc
   DreamPresentWii.print_msg ex.inspect + "\n" + ex.backtrace.join("\n")
