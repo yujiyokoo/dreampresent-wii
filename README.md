@@ -21,3 +21,13 @@ make clean && cd src/ && mrbc -g -Bprogram -o program.c page_data.rb platform_li
 
 If everything goes well, you should see a file called `dreampresent-wii.dol`. You can run this on emulators, or Wii if you can get your program to run on it (more details soon).
 
+## Test
+
+Testing is WIP, but you should be able to run some tests if you run:
+
+```shell
+bundle install
+bundle exec rake test
+```
+
+Please note this assumes you have a working Ruby installation (not mruby, but "regular" Ruby where you have bundler, rake, minitest etc available) in your environment.

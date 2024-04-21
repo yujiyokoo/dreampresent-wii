@@ -242,6 +242,12 @@ end
 # This renders a 'background' with 640x480 image
 # It also renders timer and page progress
 class PageBaseContent
+  PAGES_BAR_LEN = 640 - 32
+  PAGES_Y_POS = 410
+  DURATION = 20 * 60 # 20 mins
+  PROGRESS_LEN = 640 - 32
+  PROGRESS_Y_POS = 440
+
   def initialize(path, page_count)
     @page_count = page_count
     @path = String(path).strip
@@ -263,9 +269,6 @@ class PageBaseContent
   end
 
   def render_page_progress(dc_kos, page_count, page_index)
-    PAGES_BAR_LEN = 640 - 32
-    PAGES_Y_POS = 410
-
     pos_x =
       if page_count <= 1
         0
@@ -278,10 +281,6 @@ class PageBaseContent
   end
 
   def render_timer_progress(dc_kos, start_time, time_adjustment)
-    DURATION = 20 * 60 # 20 mins
-    PROGRESS_LEN = 640 - 32
-    PROGRESS_Y_POS = 440
-
     pos_x = ((Time.now.to_i - start_time.to_i + time_adjustment) * PROGRESS_LEN / DURATION).to_i
     puts "#################### start_time: #{start_time}, adj: #{time_adjustment}, now: #{Time.now}, pos_x: #{pos_x}"
     puts "((#{Time.now.to_i} - #{start_time.to_i} + #{time_adjustment}) * #{PROGRESS_LEN} / #{DURATION}).to_i"
@@ -328,7 +327,6 @@ class LineContent
       end
 
     dc_kos.push_obj_buffer(DrawLine.new(dc_kos, @direction, @width, @x, @y, @len, r, g, b))
-    ResultConstants::OK
   end
 end
 
@@ -347,6 +345,8 @@ class DrawLine
         @dc_kos.draw_vertical_line(@x + line_num, @y, @len, @r, @g, @b)
       end
     end
+
+    ResultConstants::OK
   end 
 end
 
