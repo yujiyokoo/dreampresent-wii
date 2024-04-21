@@ -2,36 +2,6 @@ require_relative "test_helper"
 
 require 'page_data'
 
-class FakeDcKos
-  attr_reader :calls
-
-  def initialize
-    @calls = []
-  end
-
-  def push_obj_buffer(obj)
-    @obj = obj
-  end
-
-  def draw_horizontal_line(*args)
-    @calls.push([:draw_horizontal_line, *args])
-  end
-
-  def draw_vertical_line(*args)
-    @calls.push([:draw_vertical_line, *args])
-  end
-
-  def content_string
-    "content string"
-  end
-end
-
-class FakeParser
-  def parse(str)
-    "parsed " + str
-  end
-end
-
 describe DrawLine do
   describe "#render" do
     it "calls draw_horizontal_line if :horizontal given" do
