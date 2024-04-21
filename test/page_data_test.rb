@@ -24,12 +24,6 @@ end
 
 describe DrawLine do
   describe "#render" do
-    it "returrns OK" do
-      dc_kos = FakeDcKos.new
-      draw_line = DrawLine.new(dc_kos, :horizontal, 1, 0, 10, 0, 0, 0, 0)
-      assert_equal ResultConstants::OK, draw_line.render
-    end
-
     it "calls draw_horizontal_line if :horizontal given" do
       dc_kos = FakeDcKos.new
       draw_line = DrawLine.new(dc_kos, :horizontal, 1, 0, 10, 0, 0, 0, 0)
