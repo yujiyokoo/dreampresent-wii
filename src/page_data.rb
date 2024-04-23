@@ -314,17 +314,7 @@ class LineContent
     # currently supports 'red', 'yellow', 'black'
     # everything else will be white
     # TODO: let's make a colour lookup class... See DcKos
-    r, g, b =
-      case @colour
-      when 'red'
-        [255, 0, 0]
-      when 'yellow'
-        [255, 255, 0]
-      when 'black'
-        [0, 0, 0]
-      else
-        [255, 255, 255]
-      end
+    r, g, b = DcKosRb.colour_to_rgb(@colour)
 
     dc_kos.push_obj_buffer(DrawLine.new(dc_kos, @direction, @width, @x, @y, @len, r, g, b))
 

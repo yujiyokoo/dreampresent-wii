@@ -17,28 +17,31 @@ class DcKosRb
     @obj_buffer = []
   end
 
+  def self.colour_to_rgb(colour)
+    case colour
+    when 'red'
+        [255, 0, 0]
+    when 'magenta'
+        [255, 0, 255]
+    when 'ltblue'
+        [135, 206, 250]
+    when 'yellow'
+        [255, 255, 0]
+    when 'ltgreen'
+        [144, 238, 144]
+    when 'cyan'
+      [0, 255, 255]
+    when 'black'
+      [0, 0, 0]
+    else # unknown colours default to white
+        [255, 255, 255]
+    end
+  end
+
   LINE_HEIGHT = 30
   # this understands '\n' as linebreak
   def draw_str(str, x, y, line_height = LINE_HEIGHT, colour, show_bg)
-    # TODO: let's make a colour lookup class... See LineContent
-    rgb =
-      case colour
-      when 'red'
-         [255, 0, 0]
-      when 'magenta'
-         [255, 0, 255]
-      when 'ltblue'
-         [135, 206, 250]
-      when 'yellow'
-         [255, 255, 0]
-      when 'ltgreen'
-         [144, 238, 144]
-      when 'cyan'
-        [0, 255, 255]
-      else # unknown colours default to white
-         [255, 255, 255]
-      end
-
+    rgb = self.class.colour_to_rgb(colour)
     bg_on =
       if ['true', 'yes'].include? show_bg
         1
