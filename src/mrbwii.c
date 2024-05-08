@@ -39,35 +39,26 @@ int find_above_threshold(gforce_t* ghistory, int index, float threshold) {
   return 0;
 }
 
-int8_t neg_pos_history[60] = {0};
+int8_t movement_history[60] = {0};
 void *record_input() {
   while(1) {
     VIDEO_WaitVSync();
     u64 curr_time = gettime();
-    u32 start_ms = ticks_to_millisecs(curr_time);
-    // printf("record input start: %u\r", start_ms);
 
     input_buf.index = (input_buf.index + 1) % BUFSIZE;
     WPAD_ScanPads();
     WPAD_GForce(0, &(input_buf.buffer[input_buf.index]));
 
     gforce_t gforce = input_buf.buffer[input_buf.index];
-    char* neg_pos = "";
-    neg_pos_history[input_buf.index] = 0; // should use if-else-if-else but this is good enough
+    movement_history[input_buf.index] = 0; // should use if-else-if-else but this is good enough
     // if it's near 0, and it's been positive recently, and been negative before that, then it's a neg_pos
     if(abs(gforce.x) < 0.5 && find_above_threshold(input_buf.buffer, input_buf.index, 1.0) && find_below_threshold(input_buf.buffer, (input_buf.index+45)%60, -2.0)) {
-      neg_pos_history[input_buf.index] = -1;
+      movement_history[input_buf.index] = -1;
     }
-    char* pos_neg = "";
     // if it's near 0, and it's been negative recently, and been positive before that, then it's a pos_neg
     if(abs(gforce.x) < 0.5 && find_below_threshold(input_buf.buffer, input_buf.index, -1.0) && find_above_threshold(input_buf.buffer, (input_buf.index+45)%60, 2.0)) {
-      neg_pos_history[input_buf.index] = 1;
+      movement_history[input_buf.index] = 1;
     }
-
-    // Just for debugging, set random value to neg_pos_history[input_buf.index]
-    // neg_pos_history[input_buf.index] = rand() % 3 - 1;
-    // printf("assigning %d\r", neg_pos_history[input_buf.index]);
-    // GRRLIB_Printf(5, input_buf.index * 24, tex_font, GRRLIB_WHITE, 1, "");
 
     LWP_YieldThread();
   }
@@ -86,7 +77,6 @@ void init_controller_reader() {
 static mrb_value get_remote_state(mrb_state *mrb, mrb_value self) {
   static int8_t bookmark = -1;
   u64 curr_time = gettime();
-  u32 start_ms = ticks_to_millisecs(curr_time);
   int8_t current_index = input_buf.index;
   static int8_t last_state = 0;
 
@@ -95,10 +85,10 @@ static mrb_value get_remote_state(mrb_state *mrb, mrb_value self) {
     bookmark = 0;
   }
   // printf("bookmark: %d, current_index: %d\r", bookmark, current_index);
-  // printf("last_state: %d, current_value: %d\r", last_state, neg_pos_history[current_index]);
+  // printf("last_state: %d, current_value: %d\r", last_state, movement_history[current_index]);
 
   // if it is not stopped yet, return 0
-  if (neg_pos_history[current_index] != 0) {
+  if (movement_history[current_index] != 0) {
     // printf("returning 0\r");
     bookmark = current_index;
     last_state = 1;
@@ -117,7 +107,7 @@ static mrb_value get_remote_state(mrb_state *mrb, mrb_value self) {
   int8_t i;
   bool move_found = 0;
   for (i = bookmark; i != current_index; i = (i + 1) % BUFSIZE) {
-    if (neg_pos_history[i] == 1 || neg_pos_history[i] == -1) {
+    if (movement_history[i] == 1 || movement_history[i] == -1) {
       // movement detected
       move_found = 1;
     }
