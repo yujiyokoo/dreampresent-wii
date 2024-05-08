@@ -282,8 +282,8 @@ class PageBaseContent
 
   def render_timer_progress(dc_kos, start_time, time_adjustment)
     pos_x = ((Time.now.to_i - start_time.to_i + time_adjustment) * PROGRESS_LEN / DURATION).to_i
-    puts "#################### start_time: #{start_time}, adj: #{time_adjustment}, now: #{Time.now}, pos_x: #{pos_x}"
-    puts "((#{Time.now.to_i} - #{start_time.to_i} + #{time_adjustment}) * #{PROGRESS_LEN} / #{DURATION}).to_i"
+    # puts "#################### start_time: #{start_time}, adj: #{time_adjustment}, now: #{Time.now}, pos_x: #{pos_x}"
+    # puts "((#{Time.now.to_i} - #{start_time.to_i} + #{time_adjustment}) * #{PROGRESS_LEN} / #{DURATION}).to_i"
     pos_x = PROGRESS_LEN if pos_x > PROGRESS_LEN
     pos_x = 0 if pos_x < 0
 
@@ -379,11 +379,11 @@ class Page
 
   def show(dc_kos, presentation_state, start_time)
     dc_kos.render_screen_and_wait
-    puts "------ about to call each on @sections"
-    p @sections
+    # puts "------ about to call each on @sections"
+    # p @sections
     @sections.each_with_index { |s, idx|
       render_result = s.render(dc_kos, presentation_state, start_time)
-      puts "-------- section render result: #{ render_result }"
+      # puts "-------- section render result: #{ render_result }"
 
       # return if user pressed PREV, QUIT, etc.
       return render_result unless [Commands::NEXT_PAGE, ResultConstants::OK].include?(render_result)
@@ -500,8 +500,8 @@ class Parser
           background_sections + other_sections
         end
 
-      puts "==== sorted page:"
-      p sorted_page
+      # puts "==== sorted page:"
+      # p sorted_page
       Page.new(sorted_page)
     }
   end

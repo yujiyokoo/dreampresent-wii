@@ -1,5 +1,6 @@
 #include <grrlib.h>
 
+#include <stdlib.h> //abs
 #include <ogc/lwp_watchdog.h>
 #include <mruby.h>
 #include <mruby/class.h>
@@ -10,6 +11,123 @@
 #include "images.h"
 
 extern GRRLIB_texImg *tex_font;
+
+# define BUFSIZE 60
+struct InputBuf {
+  gforce_t buffer[BUFSIZE];
+  uint8_t index;
+} input_buf;
+
+const int recent_frames_duration = 15;
+int find_below_threshold(gforce_t* ghistory, int index, float threshold) {
+  int start = (index + 60 - recent_frames_duration) % 60;
+  for (int i = 0; i < recent_frames_duration; i++) {
+    if (ghistory[(start + i) % 60].x < threshold) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int find_above_threshold(gforce_t* ghistory, int index, float threshold) {
+  int start = (index + 60 - recent_frames_duration) % 60;
+  for (int i = 0; i < recent_frames_duration; i++) {
+    if (ghistory[(start + i) % 60].x > threshold) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int8_t neg_pos_history[60] = {0};
+void *record_input() {
+  while(1) {
+    VIDEO_WaitVSync();
+    u64 curr_time = gettime();
+    u32 start_ms = ticks_to_millisecs(curr_time);
+    // printf("record input start: %u\r", start_ms);
+
+    input_buf.index = (input_buf.index + 1) % BUFSIZE;
+    WPAD_ScanPads();
+    WPAD_GForce(0, &(input_buf.buffer[input_buf.index]));
+
+    gforce_t gforce = input_buf.buffer[input_buf.index];
+    char* neg_pos = "";
+    neg_pos_history[input_buf.index] = 0; // should use if-else-if-else but this is good enough
+    // if it's near 0, and it's been positive recently, and been negative before that, then it's a neg_pos
+    if(abs(gforce.x) < 0.5 && find_above_threshold(input_buf.buffer, input_buf.index, 1.0) && find_below_threshold(input_buf.buffer, (input_buf.index+45)%60, -2.0)) {
+      neg_pos_history[input_buf.index] = -1;
+    }
+    char* pos_neg = "";
+    // if it's near 0, and it's been negative recently, and been positive before that, then it's a pos_neg
+    if(abs(gforce.x) < 0.5 && find_below_threshold(input_buf.buffer, input_buf.index, -1.0) && find_above_threshold(input_buf.buffer, (input_buf.index+45)%60, 2.0)) {
+      neg_pos_history[input_buf.index] = 1;
+    }
+
+    // Just for debugging, set random value to neg_pos_history[input_buf.index]
+    // neg_pos_history[input_buf.index] = rand() % 3 - 1;
+    // printf("assigning %d\r", neg_pos_history[input_buf.index]);
+    // GRRLIB_Printf(5, input_buf.index * 24, tex_font, GRRLIB_WHITE, 1, "");
+
+    LWP_YieldThread();
+  }
+}
+
+void init_controller_reader() {
+  input_buf.index = 0;
+  for (int i = 0; i < BUFSIZE; i++) {
+    input_buf.buffer[i] = (gforce_t){0.0, 0.0, 0.0};
+  }
+  lwp_t thread;
+  LWP_CreateThread(&thread, record_input, NULL, NULL, 0, 0);
+}
+
+// 1 if horizontal movement -> stop detected
+static mrb_value get_remote_state(mrb_state *mrb, mrb_value self) {
+  static int8_t bookmark = -1;
+  u64 curr_time = gettime();
+  u32 start_ms = ticks_to_millisecs(curr_time);
+  int8_t current_index = input_buf.index;
+  static int8_t last_state = 0;
+
+  // initialise to 0 if uninitialised
+  if (bookmark == -1) {
+    bookmark = 0;
+  }
+  // printf("bookmark: %d, current_index: %d\r", bookmark, current_index);
+  // printf("last_state: %d, current_value: %d\r", last_state, neg_pos_history[current_index]);
+
+  // if it is not stopped yet, return 0
+  if (neg_pos_history[current_index] != 0) {
+    // printf("returning 0\r");
+    bookmark = current_index;
+    last_state = 1;
+    return mrb_fixnum_value(0);
+  }
+
+  // if the last state was 1, return 1 as it was moving and has stopped
+  if (last_state == 1) {
+    // printf("returning 1\r");
+    bookmark = current_index;
+    last_state = 0;
+    return mrb_fixnum_value(1);
+  }
+
+  // if there has been movement between bookmark and current_index, return 1
+  int8_t i;
+  bool move_found = 0;
+  for (i = bookmark; i != current_index; i = (i + 1) % BUFSIZE) {
+    if (neg_pos_history[i] == 1 || neg_pos_history[i] == -1) {
+      // movement detected
+      move_found = 1;
+    }
+  }
+
+  // printf("returning mov_found: %d\r", move_found);
+  last_state = 0;
+  bookmark = current_index;
+  return mrb_fixnum_value(move_found);
+}
 
 // as puts is working now, this may not be needed any more
 static mrb_value print_msg(mrb_state *mrb, mrb_value self) {
@@ -154,7 +272,7 @@ static mrb_value draw_vertical_line(mrb_state *mrb, mrb_value self) {
 static mrb_value int_time(mrb_state *mrb, mrb_value self) {
   u64 curr_time = gettime();
   u32 curr_sec = ticks_to_millisecs(curr_time) / 1000;
-  printf("curr_sec: %d\r", curr_sec);
+  // printf("curr_sec: %d\r", curr_sec);
   return mrb_int_value(mrb, curr_sec);
 }
 
@@ -164,6 +282,7 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "render_png", render_png, MRB_ARGS_REQ(3));
   mrb_define_module_function(mrb, mwii_module, "draw_str", draw_str, MRB_ARGS_REQ(7));
   mrb_define_module_function(mrb, mwii_module, "get_button_state", get_button_state, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "get_remote_state", get_remote_state, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "btn_a?", btn_a, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "btn_b?", btn_b, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "btn_start?", btn_start, MRB_ARGS_REQ(1));

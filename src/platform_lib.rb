@@ -87,6 +87,7 @@ class DcKosRb
     previous_state = @dc_kos::get_button_state
     while true do
       button_state = @dc_kos::get_button_state
+      remote_state = @dc_kos::get_remote_state
       #i = i + 1
       #draw_str("test #{i}", 0, 0, LINE_HEIGHT, 'red', false)
       #draw_str("button_state #{button_state}", 0, 30, LINE_HEIGHT, 'red', false)
@@ -102,13 +103,13 @@ class DcKosRb
       return SWITCH_VIDEO_MODE if switch_video_mode_combination?(previous_state, button_state)
 
       # press STRAT or A to go forward
-      if start_or_a_pressed?(previous_state, button_state)
+      if start_or_a_pressed?(previous_state, button_state) || remote_state == 1
         clear_obj_buffer if clear_screen_on_nav
         return NEXT_PAGE
       end
 
       # press B to go back
-      if b_pressed?(previous_state, button_state)
+      if b_pressed?(previous_state, button_state) || remote_state == -1
         clear_obj_buffer if clear_screen_on_nav
         return PREVIOUS_PAGE
       end
