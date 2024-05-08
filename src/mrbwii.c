@@ -2,6 +2,7 @@
 
 #include <stdlib.h> //abs
 #include <ogc/lwp_watchdog.h>
+#include <aesndlib.h>
 #include <mruby.h>
 #include <mruby/class.h>
 #include <mruby/data.h>
@@ -9,8 +10,10 @@
 #include <wiiuse/wpad.h>
 #include "content_txt.h"
 #include "images.h"
+#include "sounds.h"
 
 extern GRRLIB_texImg *tex_font;
+extern AESNDPB *global_pb;
 
 # define BUFSIZE 60
 struct InputBuf {
@@ -266,6 +269,15 @@ static mrb_value int_time(mrb_state *mrb, mrb_value self) {
   return mrb_int_value(mrb, curr_sec);
 }
 
+static mrb_value play_test_sound(mrb_state *mrb, mrb_value self) {
+  // play test sound
+  if(global_pb == NULL) {
+    global_pb = AESND_AllocateVoice(NULL);
+  }
+  AESND_PlayVoice(global_pb, VOICE_STEREO16, test_wav_raw, test_wav_raw_size, 44100, 0, 0);
+  return mrb_nil_value();
+}
+
 void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "print_msg", print_msg, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "content_string", content_string, MRB_ARGS_NONE());
@@ -284,6 +296,7 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "draw_horizontal_line", draw_horizontal_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, mwii_module, "draw_vertical_line", draw_vertical_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, mwii_module, "int_time", int_time, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "play_test_sound", play_test_sound, MRB_ARGS_NONE());
 }
 
 // DreamPresentPng

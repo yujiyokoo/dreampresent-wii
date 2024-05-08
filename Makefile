@@ -33,7 +33,7 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lwiiuse -lbte /media/psf/Home/Repos/parallels-ubuntu/mruby/build/wii/lib/libmruby_core.a /media/psf/Home/Repos/parallels-ubuntu/mruby/build/wii/lib/libmruby.a -lgrrlib -lfreetype -lbz2 -lpngu -lpng -ljpeg -lz -lfat -lwiiuse -lbte -logc -lm
+LIBS	:=	-lwiiuse -lbte /media/psf/Home/Repos/parallels-ubuntu/mruby/build/wii/lib/libmruby_core.a /media/psf/Home/Repos/parallels-ubuntu/mruby/build/wii/lib/libmruby.a -lgrrlib -lfreetype -lbz2 -lpngu -lpng -ljpeg -lz -lfat -lwiiuse -lbte -lmodplay -laesnd -logc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -146,6 +146,22 @@ $(OFILES_SOURCES) : $(HFILES)
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	$(bin2o)
+
+#---------------------------------------------------------------------------------
+# This rule links in binary data with the .raw extension
+#---------------------------------------------------------------------------------
+%.raw.o	%_raw.h :	%.raw
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	$(bin2o)
+
+#---------------------------------------------------------------------------------
+# This rule makes .raw from .wav
+#---------------------------------------------------------------------------------
+%.raw :	%.wav
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	$(sox $< -t raw -b 16 --endian big -c 2 $<.raw)
 
 -include $(DEPENDS)
 
