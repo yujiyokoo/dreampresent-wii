@@ -2,3 +2,5 @@ src/program.c
 build/
 dreampresent-wii.elf
 dreampresent-wii.dol
+dreampresent.cdi
+dreampresent.elf
