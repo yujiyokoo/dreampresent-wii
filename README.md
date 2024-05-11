@@ -16,7 +16,7 @@ This will be fixed soon, but currently, you have to first edit Makefile. There a
 
 Then run this command:
 ```
-make clean && cd src/ && mrbc -g -Bprogram -o program.c  common/page_data.rb wii/platform_lib.rb common/presentation.rb common/dreampresent.rb common/start.rb  && cd .. && make
+make -f Makefile.wii clean && cd src/ && mrbc -g -Bprogram -o program.c  common/page_data.rb wii/platform_lib.rb common/presentation.rb common/dreampresent.rb common/start.rb  && cd .. && make -f Makefile.wii
 ```
 
 If everything goes well, you should see a file called `dreampresent-wii.dol`. You can run this on emulators, or Wii if you can get your program to run on it (more details soon).
