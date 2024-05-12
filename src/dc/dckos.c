@@ -32,7 +32,7 @@ static mrb_value content_string(mrb_state *mrb, mrb_value self) {
   result = mrb_malloc(mrb, sizeof(char));
   *result = '\0';
 
-  path = "/rd/content.dreampresent";
+  path = "/rd/content.txt";
   f = fs_open(path, O_RDONLY);
 
   if(f < 0) {
