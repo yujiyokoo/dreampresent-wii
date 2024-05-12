@@ -1,4 +1,6 @@
 src/program.c
+src/dc/dreampresent.c
+src/dc/*.o
 build/
 dreampresent-wii.elf
 dreampresent-wii.dol
