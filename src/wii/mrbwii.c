@@ -122,30 +122,21 @@ static mrb_value get_remote_state(mrb_state *mrb, mrb_value self) {
   return mrb_fixnum_value(move_found);
 }
 
-// as puts is working now, this may not be needed any more
-static mrb_value print_msg(mrb_state *mrb, mrb_value self) {
-  char *unwrapped_content;
-  mrb_value str_content;
-
-  mrb_get_args(mrb, "S", &str_content);
-  unwrapped_content = mrb_str_to_cstr(mrb, str_content);
-  printf("%s\r\n", unwrapped_content);
-
-  return mrb_nil_value();
-}
-
 static mrb_value content_string(mrb_state *mrb, mrb_value self) {
   return mrb_str_new_cstr(mrb, (const char*)content_txt);
 }
 
 static mrb_value render_screen_and_wait(mrb_state *mrb, mrb_value self) {
-  GRRLIB_Render();
   VIDEO_WaitVSync();
+  GRRLIB_Render();
   return mrb_nil_value();
 }
 
 #define GRRLIB_WHITE   0xFFFFFFFF
 static mrb_value render_png(mrb_state *mrb, mrb_value self) {
+  // This is invoked from the Ruby code as it's the way for the DC
+  // version to render images, but on Wii, we don't need to do anything
+  /*
   mrb_value png_name;
   mrb_int base_x, base_y;
   char *c_png_name;
@@ -159,6 +150,7 @@ static mrb_value render_png(mrb_state *mrb, mrb_value self) {
   // TODO: Seems like images should be only loaded once?
   GRRLIB_texImg *tex_png = GRRLIB_LoadTexture(png_asset);
   GRRLIB_DrawImg(base_x, base_y, tex_png, 0, 1, 1, GRRLIB_WHITE);
+  */
   return mrb_nil_value();
 }
 
@@ -279,7 +271,6 @@ static mrb_value play_test_sound(mrb_state *mrb, mrb_value self) {
 }
 
 void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
-  mrb_define_module_function(mrb, mwii_module, "print_msg", print_msg, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, mwii_module, "content_string", content_string, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "render_png", render_png, MRB_ARGS_REQ(3));
   mrb_define_module_function(mrb, mwii_module, "draw_str", draw_str, MRB_ARGS_REQ(7));

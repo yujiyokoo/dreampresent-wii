@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
 
   mrb_state *mrb = mrb_open();
   if (!mrb) { return 1; }
-  struct RClass *dwii_module = mrb_define_module(mrb, "DreamPresentWii");
+  struct RClass *dwii_module = mrb_define_module(mrb, "DreamPresent");
   define_module_functions(mrb, dwii_module);
   dream_present_png_init(mrb);
 

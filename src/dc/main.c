@@ -24,15 +24,15 @@ extern uint8 romdisk[];
 extern const uint8_t dreampresent_bytecode[]; // compiled ruby code
 
 int main(int argc, char **argv) {
+    // Set DM_MULTIBUFFER to enable double buffering (and use vid_flip(-1) to swap buffers)
     vid_set_mode(DM_640x480_VGA, PM_RGB565);
-    //vid_set_mode(DM_640x480_NTSC_IL, PM_RGB565);
     snd_init();
     load_sound_effects();
 
     mrb_state *mrb = mrb_open();
     if (!mrb) { return 1; }
 
-    struct RClass *dc_kos = mrb_define_module(mrb, "DcKos");
+    struct RClass *dc_kos = mrb_define_module(mrb, "DreamPresent");
 
     define_module_functions(mrb, dc_kos);
 

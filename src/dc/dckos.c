@@ -22,19 +22,17 @@ int _is_in_screen(int x, int y) {
 }
 
 // Be careful with this function. It'll attempt to read the entire file.
-static mrb_value read_whole_txt_file(mrb_state *mrb, mrb_value self) {
+static mrb_value content_string(mrb_state *mrb, mrb_value self) {
   char buffer[2048];
   int length;
   file_t f;
-  mrb_value m_path;
   char *path;
 
   char *result = NULL;
   result = mrb_malloc(mrb, sizeof(char));
   *result = '\0';
 
-  mrb_get_args(mrb, "S", &m_path);
-  path = mrb_str_to_cstr(mrb, m_path);
+  path = "/rd/content.dreampresent";
   f = fs_open(path, O_RDONLY);
 
   if(f < 0) {
@@ -240,7 +238,7 @@ mrb_value load_png(mrb_state *mrb, mrb_value self) {
 }
 
 // this renders to vram_s
-mrb_value render_png(mrb_state *mrb, mrb_value self) {
+static mrb_value render_png(mrb_state *mrb, mrb_value self) {
   mrb_value png_path;
   mrb_int base_x, base_y;
   char *c_png_path;
@@ -326,8 +324,21 @@ static mrb_value play_test_sound(mrb_state *mrb, mrb_value self) {
   return mrb_nil_value();
 }
 
+static mrb_value wait_vbl(mrb_state *mrb, mrb_value self) {
+  vid_waitvbl();
+
+  return mrb_nil_value();
+}
+
+static mrb_value wait_vbl_and_flip(mrb_state *mrb, mrb_value self) {
+  vid_waitvbl();
+  vid_flip(-1);
+
+  return mrb_nil_value();
+}
+
 void define_module_functions(mrb_state *mrb, struct RClass *module) {
-  mrb_define_module_function(mrb, module, "read_whole_txt_file", read_whole_txt_file, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, module, "content_string", content_string, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "draw_str", draw_str, MRB_ARGS_REQ(7));
   mrb_define_module_function(mrb, module, "load_png", load_png, MRB_ARGS_REQ(4));
   mrb_define_module_function(mrb, module, "render_png", render_png, MRB_ARGS_REQ(3));
@@ -345,4 +356,6 @@ void define_module_functions(mrb_state *mrb, struct RClass *module) {
   mrb_define_module_function(mrb, module, "draw_vertical_line", draw_vertical_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, module, "next_video_mode", next_video_mode, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "play_test_sound", play_test_sound, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "wait_vbl", wait_vbl, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "wait_vbl_and_flip", wait_vbl_and_flip, MRB_ARGS_NONE());
 }

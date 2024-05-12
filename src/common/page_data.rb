@@ -233,7 +233,7 @@ class ImageContent
   end
 
   def render(dc_kos, _presentation_state, time_now)
-    # dc_kos.render_png(@path, @x, @y)
+    dc_kos.render_png(@path, @x, @y)
     dc_kos.push_obj_buffer(PositionedPng.new(@path, @x, @y))
     ResultConstants::OK
   end
@@ -257,7 +257,7 @@ class PageBaseContent
 
   def render(dc_kos, presentation_state, start_time)
     if @path && !@path.empty?
-      # dc_kos.render_png(@path, 0, 0)
+      dc_kos.render_png(@path, 0, 0)
       dc_kos.push_obj_buffer(PositionedPng.new(@path, 0, 0))
     else
       puts "Rendering background image with no path. Skipping."
@@ -276,7 +276,7 @@ class PageBaseContent
         (page_index / (page_count - 1) * PAGES_BAR_LEN).to_i
       end
 
-    # dc_kos.render_png("swirl_blue_32x28_png", pos_x, PAGES_Y_POS)
+    dc_kos.render_png("swirl_blue_32x28_png", pos_x, PAGES_Y_POS)
     dc_kos.push_obj_buffer(PositionedPng.new("swirl_blue_32x28_png", pos_x, PAGES_Y_POS))
   end
 
@@ -287,6 +287,7 @@ class PageBaseContent
     pos_x = PROGRESS_LEN if pos_x > PROGRESS_LEN
     pos_x = 0 if pos_x < 0
 
+    dc_kos.render_png("mruby_logo_32x32_png", pos_x, PROGRESS_Y_POS)
     dc_kos.push_obj_buffer(PositionedPng.new("mruby_logo_32x32_png", pos_x, PROGRESS_Y_POS))
   end
 end
@@ -316,6 +317,16 @@ class LineContent
     # TODO: let's make a colour lookup class... See DcKos
     r, g, b = DcKosRb.colour_to_rgb(@colour)
 
+
+    if @direction == :horizontal
+      (0...@width).each do |line_num|
+        dc_kos.draw_horizontal_line(@x, @y + line_num, @len, r, g, b)
+      end
+    elsif @direction == :vertical
+      (0...@width).each do |line_num|
+        dc_kos.draw_vertical_line(@x + line_num, @y, @len, r, g, b)
+      end
+    end
     dc_kos.push_obj_buffer(DrawLine.new(dc_kos, @direction, @width, @x, @y, @len, r, g, b))
 
     ResultConstants::OK
@@ -378,9 +389,6 @@ class Page
   end
 
   def show(dc_kos, presentation_state, start_time)
-    dc_kos.render_screen_and_wait
-    # puts "------ about to call each on @sections"
-    # p @sections
     @sections.each_with_index { |s, idx|
       render_result = s.render(dc_kos, presentation_state, start_time)
       # puts "-------- section render result: #{ render_result }"
