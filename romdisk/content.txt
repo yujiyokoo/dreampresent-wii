@@ -10,6 +10,7 @@
 -resettimer
 
 = Table of Contents
+-bkg:ruby_kaigi_2024_dark_bg_png
 -txt,40,40: - About me
  - About mruby
  - About Dreamcast

@@ -13,6 +13,7 @@
 #include "yuji_avatar_png.h"
 #include "ruby_white_blue_640x480_png.h"
 #include "main_title_640x480_png.h"
+#include "ruby_kaigi_2024_dark_bg_png.h"
 #include "shisa1_png.h"
 #include "shisa2_png.h"
 
@@ -41,6 +42,8 @@ const uint8_t *find_image_asset(char* image_name) {
     return ruby_white_blue_640x480_png;
   } else if(strcmp(image_name, "main_title_640x480_png") == 0) {
     return main_title_640x480_png;
+  } else if(strcmp(image_name, "ruby_kaigi_2024_dark_bg_png") == 0) {
+    return ruby_kaigi_2024_dark_bg_png;
   } else if(strcmp(image_name, "shisa1_png") == 0) {
     return shisa1_png;
   } else if(strcmp(image_name, "shisa2_png") == 0) {
