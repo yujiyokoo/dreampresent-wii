@@ -19,13 +19,13 @@ end
 
 class Time
   def self.now
-    Time.at(DcKosRb.new(DreamPresent).int_time)
+    Time.at(DreamPresentRb.new(DreamPresent).int_time)
   end
 end
 
 begin
   # puts 'Starting presentation.'
-  Dreampresent.new(DcKosRb.new(DreamPresent), Parser.new).start
+  Dreampresent.new(DreamPresentRb.new(DreamPresent), Parser.new).start
 rescue => ex
   # Note backtrace is only available when you pass -g to mrbc
   puts ex.inspect + "\n" + ex.backtrace.join("\n")

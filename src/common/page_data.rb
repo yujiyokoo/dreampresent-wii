@@ -315,7 +315,7 @@ class LineContent
     # currently supports 'red', 'yellow', 'black'
     # everything else will be white
     # TODO: let's make a colour lookup class... See DcKos
-    r, g, b = DcKosRb.colour_to_rgb(@colour)
+    r, g, b = DreamPresentRb.colour_to_rgb(@colour)
 
 
     if @direction == :horizontal

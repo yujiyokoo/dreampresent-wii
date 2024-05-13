@@ -5,6 +5,7 @@
 #include "DCToSerial_png.h"
 #include "bg_dark_png.h"
 #include "dreamcast_photo_png.h"
+#include "wii_photo_png.h"
 #include "emulator_console_png.h"
 #include "font_png.h"
 #include "mruby_logo_32x32_png.h"
@@ -16,6 +17,7 @@
 #include "ruby_kaigi_2024_dark_bg_png.h"
 #include "shisa1_png.h"
 #include "shisa2_png.h"
+#include "qrcode_png.h"
 
 const uint8_t *find_image_asset(char* image_name) {
   if(strcmp(image_name, "DCSerialConnector_png") == 0) {
@@ -26,6 +28,8 @@ const uint8_t *find_image_asset(char* image_name) {
     return bg_dark_png;
   } else if(strcmp(image_name, "dreamcast_photo_png") == 0) {
     return dreamcast_photo_png;
+  } else if(strcmp(image_name, "wii_photo_png") == 0) {
+    return wii_photo_png;
   } else if(strcmp(image_name, "emulator_console_png") == 0) {
     return emulator_console_png;
   } else if(strcmp(image_name, "font_png") == 0) {
@@ -48,6 +52,8 @@ const uint8_t *find_image_asset(char* image_name) {
     return shisa1_png;
   } else if(strcmp(image_name, "shisa2_png") == 0) {
     return shisa2_png;
+  } else if(strcmp(image_name, "qrcode_png") == 0) {
+    return qrcode_png;
   } else {
     // TODO: What should we return as default here?
     return swirl_blue_32x28_png;

@@ -9,7 +9,7 @@ module Commands
 end
 
 # Ruby-level wrapper to DcKos
-class DcKosRb
+class DreamPresentRb
   include Commands
 
   def initialize(dc_kos)

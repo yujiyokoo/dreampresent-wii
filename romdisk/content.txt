@@ -29,7 +29,7 @@
 
 = About me
 -txt,60,30:Yuji Yokoo
-  Software dev.
+  Software developer
   Work: CipherStash
   Based in: Tokyo, Japan
   Previously in: Adelaide, South Australia
@@ -69,7 +69,7 @@
 -wait:
 -txt,30,90: - Good OSS for homebrew (KallistiOS)
 -wait:
--txt,30,120:   - KallistiOS ports now includes mruby!
+-txt,30,120:   - KOS ports now includes mruby!
 -wait:
 -txt,30,150: - Runs custom code with no mods*
 -txt,30,240: *assuming you have early-revision consoles
@@ -77,9 +77,14 @@
 
 = About Wii
 -txt,10,30: - Great innovative console from Nintendo
+-img,40,50: wii_photo_png
+
+= About Wii
+-txt,10,30: - Great innovative console from Nintendo
 -wait:
 -txt,10,90: - Relaesed in 2006
    - Not very powerful - an update to GameCube
+   - Wii Remote (aka Wiimote)
    - IBM PowerPC 729MHz
    - 24MB 1T-SRAM + 64MB GDDR3
    - Wii Optical Disc, GameCube Game Disc & SD card
@@ -113,6 +118,7 @@ Dreamcast sold over 9 million units
 -txt,60,270: - It's a live demo
 
 = mruby, Dreamcast, and Wii
+-txt,30,30:mruby support:
 -txt,60,60:Dreamcast - officially supported since 2020
 -wait:
 -txt,60,90:Wii - officially supported since 2023
@@ -159,16 +165,16 @@ Dreamcast sold over 9 million units
 -txt,200,72,white:Cross
 -txt,200,96,white:compile
 -wait:
--txt,30,130,white,yes:[ SH4/PPC object file]
+-txt,30,130,white,yes:[SH4/PPC object file]
 -wait:
 -txt,160,160,yellow:|
 -txt,160,190,yellow:|
 -txt,178,175,white:<- link -
--txt,320,160,white,yes:[ DC/Wii library (SH4/PPC) ]
+-txt,320,160,white,yes:[DC/Wii library (SH4/PPC)]
 -wait:
--txt,320,190,white,yes:[ mruby library (SH4/PPC) ]
+-txt,320,190,white,yes:[mruby library (SH4/PPC)]
 -wait:
--txt,30,220,white,yes:[ Executable (.elf) ]
+-txt,30,220,white,yes:[Executable (.elf)]
 -wait:
 -txt,270,220,white: *runnable on console
 -wait:
@@ -176,7 +182,7 @@ Dreamcast sold over 9 million units
 -txt,160,280,yellow:|
 -txt,178,265,white:<--- binary munging
 -wait:
--txt,30,310,white,yes:[ bootable image (cdi/dol) ]
+-txt,30,310,white,yes:[bootable image (cdi/dol)]
 
 = Cross-platform for DC and Wii
 -wait:
@@ -185,8 +191,9 @@ Dreamcast sold over 9 million units
 -txt,60,90:  - many issues, and gave up (for now)
 -wait:
 -txt,60,120:- Manual management
+-txt,60,150:  - separate source files for platform things
 -wait:
--txt,60,150:  - Develep on DC, Wii, then DC again...
+-txt,60,180:  - Develep on DC, Wii, then DC again...
 
 = Directories
 -wait:
@@ -228,65 +235,14 @@ functions
 -txt,420,280,yellow,yes:<- run mruby code
 -txt,260,310,yellow,yes:<- finish
 
-= mruby bytecode
--txtblock,20,50,610,400
--code,30,60,c: bytecode[] = {
- 0x45,0x54,0x49,0x52,0x30,0x30,0x30,0x36,0x34,
- 0x35,0x00,0x00,0x89,0xe0,0x4d,0x41,0x54,0x5a,
- 0x30,0x30,0x30,0x30,0x49,0x52,0x45,0x50,0x00,
- 0x00,0x3f,0x9b,0x30,0x30,0x30,0x32,0x00,0x00,
- 0x06,0x18,0x00,0x02,0x00,0x06,0x00,0x13,0x00,
- 0x00,0x01,0x1f,0x0f,0x02,0x5b,0x02,0x00,0x5c,
- 0x02,0x00,0x0f,0x02,0x0f,0x03,0x5a,0x02,0x01,
- 0x5c,0x02,0x01,0x0f,0x02,0x0f,0x03,0x5a,0x02,
+= Main entry point (DC)
 
-= Integration with C
--txt,30,30:Example: Reading controller buttons
--txt,30,60:KOS button state in 16 bit flags
--txtblock,20,90,610,400
--code,30,100,c:mrb_value start(mrb_state *mrb, mrb_value self)
-{
-  struct mrb_value state;
-  mrb_get_args(mrb, "i", &state);
-
-  return mrb_bool_value(
-    mrb_fixnum(state) & CONT_START
-  );
-};
--wait:
--txt,170,220,yellow,yes:^ unwrap mruby value param
--txt,170,220,yellow:|
--hline,74,306,360,2:yellow
--txt,240,310,yellow,yes:Checking Start Button
--txt,320,250,yellow,yes:<- wrap in mruby value
-
-= Integration with C
--txt,30,30:Example: Reading controller buttons
--txt,30,60:KOS button state in 16 bit flags
--txtblock,20,90,610,400
--code,30,100,c:void define_module_functions(mrb_state *mrb,
-        struct RClass *module)
-{
-  mrb_define_module_function(mrb, module,
-      "btn_start?", start, MRB_ARGS_REQ(1));
-}
--wait:
--txt,70,254,yellow,yes:     ^ attach "start" function to
-the given module, and call it "btn_start?"
--txt,70,254,yellow:     |
-
-= Integration with C
--txt,40,40:From Ruby:
--txtblock,40,120,600,240
--code,50,130,ruby:def is_start_on?
-  DcKos::btn_start?(DcKos::get_button_state)
-end
 
 = Dreampresent start.rb
 -txtblock,40,40,600,400
 -code,50,50,ruby:begin
   puts "Starting presentation."
-  Dreampresent.new(DcKosRb.new(DcKos)).start
+  Dreampresent.new(DreamPresentRb.new(DreamPresent)).start
 rescue => ex
   # NOTE: backtrace requires 'mrbc -g'
   p ex.backtrace
@@ -298,70 +254,95 @@ end
 -txt,460,140,yellow:|
 -txt,270,220,yellow,yes:<- errors/clean up
 
-= Dreampresent application class
--txtblock,40,40,600,400
--code,50,50,ruby:class Dreampresent
-  def initialize(dc_kos)
-    @dc_kos = dc_kos
-  end
-
-  def start
-    puts "Dreampresent: start"
-    Presentation.new(@dc_kos,
-      PageData.new(@dc_kos, Time.now).all
-    ).run
-  end
-end
+= Differences - asset access
+-txt,30,30:KOS provides "romdisk" virtual file system
 -wait:
--txt,440,190,yellow,yes:create
--txt,440,220,yellow,yes:presentation
--txt,440,250,yellow,yes:<- and start
-
-
-= Where to run/test
+-txtblock,40,55,400,120
+-code,60,60,C:path = "/rd/content.txt";
+f = fs_open(path, O_RDONLY);
 -wait:
--txt,40,60:Actual Dreamcast unit is the best.
-However, emulators are handy too.
+-txt,30,200:devkitPPC converts assets data to object + header
 -wait:
--txt,40,120:Emulators
- - Convenient. No need for the real unit.
- - Has Standard Out (STDOUT)
- - But, not the same.
+-txtblock,40,225,540,290
+-code,60,230,C:extern const uint8_t qrcode_png[];
+extern const uint8_t qrcode_png_end[];
 
-= Console (emulator/ip/serial)
--txt,40,30: with emulators, console output is available
+= Differences - asset access
+-txt,30,30:String to const mapping for Wii
+-txtblock,40,55,570,280
+-code,60,60,C:const uint8_t *find_img(char* img) {
+  if(strcmp(img, "profile_pic.png") == 0) {
+    return profile_pic_png;
+  } else if(strcmp(img, "avatar.png") == 0) {
+    return avatar_png;
+  }
+
+= Differences - graphics API
+-txt,30,30:KOS provides direct VRAM access
+-wait:
+-txtblock,40,55,480,120
+-code,60,60,C:vram_s[y * PX_PER_LINE + curr_x]
+    = PACK_PIXEL(r, g, b);
+-wait:
+-txt,30,200:GRRLIB on Wii provides graphics functions and
+render function to be called every frame
+-wait:
+-txtblock,40,255,500,380
+-code,60,260,C:GRRLIB_Printf(..);
+GRRLIB_DrawImage(..);
+VIDEO_WaitVSync();
+GRRLIB_Render();
+
+= Differences - graphics API
+-txt,30,30:With KOS, objects directly manipulate the VRAM
+when 'render' is called
+-wait:
+-txt,30,120:With GRRLIB, objects are added to an object pool
+-wait:
+-txt,30,180:'render' is called for each frame.
+Each object calls the graphics API functions
+-wait:
+-txt,30,270:Then, GRRLIB_Render is invoked to render
+the screen
+
+= Testing and debugging
+-txt,40,30:Real console units: where it needs to work
+  - Hard to debug
+-wait:
+-txt,40,90:Emulators
+  - Not the same, but handy
+-wait:
+-txt,40,120:
+  - Often comes with terminal output (stdout)
+    - Dolphin recently made it easy to print
+      to stdout
+-wait:
 -img,40,70: emulator_console_png
 
-=
--txt,80,200:Now you have all the knowledge needed!
--wait:
--txt,80,230:(except a lot of details)
-
-= Future directions / TODO
--txt,40,40: - more documentation - eg. tutorials
- - separate library/mrbgem
- - get someone else to try it
+= Summary
+-txt,40,40: - Dreamcast and Wii can run the same Ruby code
+ - Cross-platform mruby works, but needs more work
+ - DX improvements needed (not Digital Transformation)
  - more features (sound, PowerVR, VMU)
  - build more demanding games
 
 = Thanks
--txt,40,40:I would like to thank, in particular:
- - mruby developers
+-txt,40,40:- mruby developers
  - KallistiOS developers
- - Dreamcast Indie and Homebrew communities
-   (Simulant in particular)
- - Ruby Kaigi Organisers and sponsors
- - Adam Davies, Olly Putland and Paul Fioravanti
+ - DevkitPro
+ - Simulant discord channel
+ - Ruby Kaigi organisers and sponsors
+-wait:
+-txt,40,190: - Everyone who came to this session
 
 = More information
--txt,10,40:Dreampresent:
-https://gitlab.com/yujiyokoo/dreampresent
--txt,10,120:Example game:
-https://gitlab.com/yujiyokoo/mrbtris-dreamcast
--txt,10,200:Development environment:
+-txt,10,40:Dreampresent cross-platform:
+https://gitlab.com/yujiyokoo/dreampresent-wii
+-txt,10,200:Dockerfile for Dreamcast:
 https://gitlab.com/yujiyokoo/docker-mruby-kos-dc
--txt,10,280:Serial cable construction info:
-https://gitlab.com/yujiyokoo/dreamcast-serial-cable
 
--txt,80,360:Ask me anything: @yujiyokoo on Twitter
+-txt,80,360: https://yujiyokoo.dev/mruby/
 
+= More information
+-txt,50,30:mruby on Retro Consoles
+-img,50,60:qrcode_png
