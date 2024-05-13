@@ -243,7 +243,7 @@ end
 # It also renders timer and page progress
 class PageBaseContent
   PAGES_BAR_LEN = 640 - 32
-  PAGES_Y_POS = 410
+  PAGES_Y_POS = 440
   DURATION = 20 * 60 # 20 mins
   PROGRESS_LEN = 640 - 32
   PROGRESS_Y_POS = 440
@@ -273,11 +273,11 @@ class PageBaseContent
       if page_count <= 1
         0
       else
-        (page_index / (page_count - 1) * PAGES_BAR_LEN).to_i
+        (page_index * PAGES_BAR_LEN / (page_count - 1)).to_i
       end
 
-    dc_kos.render_png("swirl_blue_32x28_png", pos_x, PAGES_Y_POS)
-    dc_kos.push_obj_buffer(PositionedPng.new("swirl_blue_32x28_png", pos_x, PAGES_Y_POS))
+    dc_kos.render_png("shisa1_png", pos_x, PAGES_Y_POS)
+    dc_kos.push_obj_buffer(PositionedPng.new("shisa1_png", pos_x, PAGES_Y_POS))
   end
 
   def render_timer_progress(dc_kos, start_time, time_adjustment)
@@ -287,8 +287,8 @@ class PageBaseContent
     pos_x = PROGRESS_LEN if pos_x > PROGRESS_LEN
     pos_x = 0 if pos_x < 0
 
-    dc_kos.render_png("mruby_logo_32x32_png", pos_x, PROGRESS_Y_POS)
-    dc_kos.push_obj_buffer(PositionedPng.new("mruby_logo_32x32_png", pos_x, PROGRESS_Y_POS))
+    dc_kos.render_png("shisa2_png", pos_x, PROGRESS_Y_POS)
+    dc_kos.push_obj_buffer(PositionedPng.new("shisa2_png", pos_x, PROGRESS_Y_POS))
   end
 end
 

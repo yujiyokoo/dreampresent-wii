@@ -32,9 +32,9 @@ int main(int argc, char **argv) {
     mrb_state *mrb = mrb_open();
     if (!mrb) { return 1; }
 
-    struct RClass *dc_kos = mrb_define_module(mrb, "DreamPresent");
+    struct RClass *dream_present_module = mrb_define_module(mrb, "DreamPresent");
 
-    define_module_functions(mrb, dc_kos);
+    define_module_functions(mrb, dream_present_module);
 
     mrb_load_irep(mrb, dreampresent_bytecode);
 

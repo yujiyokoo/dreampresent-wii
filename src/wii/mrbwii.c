@@ -46,7 +46,6 @@ int8_t movement_history[60] = {0};
 void *record_input() {
   while(1) {
     VIDEO_WaitVSync();
-    u64 curr_time = gettime();
 
     input_buf.index = (input_buf.index + 1) % BUFSIZE;
     WPAD_ScanPads();
@@ -79,7 +78,6 @@ void init_controller_reader() {
 // 1 if horizontal movement -> stop detected
 static mrb_value get_remote_state(mrb_state *mrb, mrb_value self) {
   static int8_t bookmark = -1;
-  u64 curr_time = gettime();
   int8_t current_index = input_buf.index;
   static int8_t last_state = 0;
 

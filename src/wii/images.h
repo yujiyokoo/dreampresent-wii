@@ -11,6 +11,9 @@
 #include "soldered_connector_png.h"
 #include "swirl_blue_32x28_png.h"
 #include "yuji_avatar_png.h"
+#include "ruby_white_blue_640x480_png.h"
+#include "shisa1_png.h"
+#include "shisa2_png.h"
 
 const uint8_t *find_image_asset(char* image_name) {
   if(strcmp(image_name, "DCSerialConnector_png") == 0) {
@@ -33,6 +36,12 @@ const uint8_t *find_image_asset(char* image_name) {
     return swirl_blue_32x28_png;
   } else if(strcmp(image_name, "yuji_avatar_png") == 0) {
     return yuji_avatar_png;
+  } else if(strcmp(image_name, "ruby_white_blue_640x480_png") == 0) {
+    return ruby_white_blue_640x480_png;
+  } else if(strcmp(image_name, "shisa1_png") == 0) {
+    return shisa1_png;
+  } else if(strcmp(image_name, "shisa2_png") == 0) {
+    return shisa2_png;
   } else {
     // TODO: What should we return as default here?
     return swirl_blue_32x28_png;
