@@ -12,6 +12,7 @@
 #include "swirl_blue_32x28_png.h"
 #include "yuji_avatar_png.h"
 #include "ruby_white_blue_640x480_png.h"
+#include "main_title_640x480_png.h"
 #include "shisa1_png.h"
 #include "shisa2_png.h"
 
@@ -38,6 +39,8 @@ const uint8_t *find_image_asset(char* image_name) {
     return yuji_avatar_png;
   } else if(strcmp(image_name, "ruby_white_blue_640x480_png") == 0) {
     return ruby_white_blue_640x480_png;
+  } else if(strcmp(image_name, "main_title_640x480_png") == 0) {
+    return main_title_640x480_png;
   } else if(strcmp(image_name, "shisa1_png") == 0) {
     return shisa1_png;
   } else if(strcmp(image_name, "shisa2_png") == 0) {

@@ -1,10 +1,10 @@
 =
--bkg: bg_dark_png
--txt,60,30:Cross-platform mruby on
-              Sega Dreamcast and Nintendo Wi
--txt,60,120:Yuji Yokoo - @yujiyokoo
--txt,120,260:PRESS START!
--img,5,6: dreamcast_photo_png
+-img,0,0: ruby_white_blue_640x480_png
+
+=
+-img,0,0: main_title_640x480_png
+-wait:
+-txt,320,216,black:PRESS A TO START!
 
 = Resetting timer internally...
 -resettimer
@@ -25,7 +25,6 @@
  - Future directions
  - Thanks and info
  - Demo
--img,5,6: dreamcast_photo_png
 
 = About me
 -txt,60,30:Yuji Yokoo
@@ -69,7 +68,9 @@
 -wait:
 -txt,30,90: - Good OSS for homebrew (KallistiOS)
 -wait:
--txt,30,120: - Runs custom code with no mods*
+-txt,30,120:   - KallistiOS ports now includes mruby!
+-wait:
+-txt,30,150: - Runs custom code with no mods*
 -txt,30,240: *assuming you have early-revision consoles
   from 1998, 1999, or early 2000
 
@@ -84,16 +85,31 @@
    - Easy exploits available for running your own code
    - No known easy way of booting custom discs
 
+= What's good about Wii today
+-wait:
+-txt,60,60:Popularity.
+Dreamcast sold over 9 million units
+-wait:
+-txt,60,120,red:Wii sold over 100 million units!
+-wait:
+-txt,60,150:Lots of people have a Wii at home
+-wait:
+-txt,60,210:I had one at home
+
 = About this application
 -txt,60,60:Dreampresent
 -wait:
--txt,60,90: - Presentation app for DC
+-txt,60,90: - Presentation app for DC from 2019
 -wait:
--txt,60,120: - Wii version
+-txt,60,120: - Runs on DC and Wii
 -wait:
 -txt,60,150: - It's not "Wiipresent"
 -wait:
--txt,60,180: - It's a live demo
+-txt,60,180: - Part of a larger project:
+-txt,60,210:     "Outstanding Performance Award" at
+-txt,60,240:     Fukuoka Ruby Awards 2023
+-wait:
+-txt,60,270: - It's a live demo
 
 = mruby, Dreamcast, and Wii
 -txt,60,60:Dreamcast - officially supported since 2020
@@ -107,19 +123,6 @@
 -txt,60,270:(toolchains and libraries needed)
 
 = Why?
--wait:
--txt,60,60:Good question.
-
-= The advantage of Wii today
--wait:
--txt,60,60:Popularity.
-Dreamcast sold over 9 million units
--wait:
--txt,60,120,red:Wii sold over 100 million units!
--wait:
--txt,60,150:Lots of people have a Wii at home
--wait:
--txt,60,210:I had one at home
 
 = Dreamcast vs Wii
 -wait:
@@ -199,16 +202,16 @@ Dreamcast sold over 9 million units
   - romdisk/
     - asset files
 
-= Main entry point
+= Main entry point (DC)
 -txtblock,30,30,600,410
 -code,40,40,c:extern const uint8_t bytecode[];
 int main(int argc, char **argv) {
   vid_set_mode(DM_640x480_VGA, PM_RGB565);
 
   mrb_state *mrb = mrb_open();
-  struct RClass *dc_kos =
-    mrb_define_module(mrb, "DcKos");
-  define_module_functions(mrb, dc_kos);
+  struct RClass *dp_mod =
+    mrb_define_module(mrb, "DreamPresent");
+  define_module_functions(mrb, dp_mod);
   mrb_load_irep(mrb, bytecode);
   mrb_close(mrb);
   return 0;
