@@ -1,50 +1,57 @@
 =
 -bkg: bg_dark_png
--txt,60,30:Developing your Dreamcast apps
-                        and games with mruby
+-txt,60,30:Cross-platform mruby on
+              Sega Dreamcast and Nintendo Wi
 -txt,60,120:Yuji Yokoo - @yujiyokoo
 -txt,120,260:PRESS START!
+-img,5,6: dreamcast_photo_png
 
 = Resetting timer internally...
 -resettimer
 
 = Table of Contents
 -txt,40,40: - About me
- - About this app
- - What is Dreamcast?
- - What is mruby?
- - What is KallistiOS?
- - Homebrew Development Steps
- - Presentation app code overview
- - Running the code
- - Getting the program to the unit
+ - About mruby
+ - About Dreamcast
+ - About Wii
+ - About this application
+ - mruby, Dreamcast, and Wii
+ - Why?
+ - Cross platform development
+ - What does cross-platform dev look like?
+ - Cross platform dev process
+ - Challenges
+ - Limitations
+ - Future directions
  - Thanks and info
  - Demo
+-img,5,6: dreamcast_photo_png
 
 = About me
 -txt,60,30:Yuji Yokoo
-  Web dev. Loves Ruby.
-  Formerly: Desktop application
-    developer (MFC/Win32)
-  From: Tokyo, Japan
-  Lives in: Adelaide, South Australia
+  Software dev.
+  Work: CipherStash
+  Based in: Tokyo, Japan
+  Previously in: Adelaide, South Australia
 -img,60,260: yuji_avatar_png
 
-= This application
--txt,60,60:Dreampresent
+= About mruby
+-txt,60,60:Lightweight implemetation of Ruby
 -wait:
--txt,60,90: - Presentation app
+-txt,60,90: - For embedded environments
 -wait:
--txt,60,120: - Runs on DC
--wait:
--txt,60,150: - mruby and C
--wait:
--txt,60,180: - It's a live demo
+-txt,60,120: - Easy to compile and link into C
 
-= What is Dreamcast?
+-txt,30,180:
+ "mruby is the lightweight implementation of the
+  Ruby language complying with part of the ISO
+  standard. mruby can be linked and embedded
+  within your application."
+
+= About Dreamcast
 -img,40,50: dreamcast_photo_png
 
-= What is Dreamcast?
+= About Dreamcast
 -txt,60,30: - The best video game console from Sega
 -wait:
 -txt,60,90: - Released in November 1998
@@ -56,97 +63,79 @@
    - Serial Port
    - Modem (33.6K~56K)
 
-= Big Question
+= About Dreamcast
 -wait:
--txt,120,120:Is Ruby dead?
+-txt,30,60: - Strong indie and homebrew communities
 -wait:
--hline,120,133,160,4:red
+-txt,30,90: - Good OSS for homebrew (KallistiOS)
+-wait:
+-txt,30,120: - Runs custom code with no mods*
+-txt,30,240: *assuming you have early-revision consoles
+  from 1998, 1999, or early 2000
 
-= Big Question
--txt,120,120:Is Dreamcast dead?
+= About Wii
+-txt,10,30: - Great innovative console from Nintendo
 -wait:
--txt,310,220:No.
+-txt,10,90: - Relaesed in 2006
+   - Not very powerful - an update to GameCube
+   - IBM PowerPC 729MHz
+   - 24MB 1T-SRAM + 64MB GDDR3
+   - Wii Optical Disc, GameCube Game Disc & SD card
+   - Easy exploits available for running your own code
+   - No known easy way of booting custom discs
 
-= Dreamcast Today
+= About this application
+-txt,60,60:Dreampresent
 -wait:
--txt,30,30:
-  - No more units produced & they are all old
+-txt,60,90: - Presentation app for DC
 -wait:
--txt,30,60:
-  - Peripherals are hard/expensive to get
+-txt,60,120: - Wii version
 -wait:
--txt,30,90:
-  - No official game distribution
+-txt,60,150: - It's not "Wiipresent"
+-wait:
+-txt,60,180: - It's a live demo
 
-= Dreamcast Today
+= mruby, Dreamcast, and Wii
+-txt,60,60:Dreamcast - officially supported since 2020
 -wait:
--txt,30,60: - Still well and truly alive!
+-txt,60,90:Wii - officially supported since 2023
 -wait:
--txt,30,90: - Strong indie/homebrew culture
+-txt,60,150:$ make MRUBY_CONFIG=dreamcast_shelf
 -wait:
--txt,30,120: - Good OSS for homebrew
+-txt,60,210:$ make MRUBY_CONFIG=nintendo_wii
 -wait:
--txt,30,150: - A lot of information is freely available
--wait:
--txt,30,180: - Runs custom code with no mods*
--txt,30,240: *assuming you have consoles produced
-  in 1998, 1999, or early 2000
+-txt,60,270:(toolchains and libraries needed)
 
-= What is mruby?
+= Why?
 -wait:
--txt,60,30: - Lightweight Ruby *implementation*
--wait:
--txt,60,60: - Mostly Ruby 1.9 syntax, with ISO standard
--wait:
--txt,60,90: - Intended for embedding
--wait:
--txt,60,120: - Easy to compile and link into C
+-txt,60,60:Good question.
 
--txt,30,180:
- "mruby is the lightweight implementation of the
-  Ruby language complying with part of the ISO
-  standard. mruby can be linked and embedded
-  within your application."
+= The advantage of Wii today
+-wait:
+-txt,60,60:Popularity.
+Dreamcast sold over 9 million units
+-wait:
+-txt,60,120,red:Wii sold over 100 million units!
+-wait:
+-txt,60,150:Lots of people have a Wii at home
+-wait:
+-txt,60,210:I had one at home
 
-= KallistiOS
+= Dreamcast vs Wii
+-wait:
+-txt,30,60:Different architectures
+-wait:
+-txt,30,90:Different generation - port from DC to Wii
+-wait:
+-txt,30,120:Different devkit/SDK/library
+-wait:
+-txt,30,150:Both have free devkit/SDK with gcc
+(KallistiOS, devkitPPC)
+-wait:
+-txt,30,210:Both allow running your own code fairly easily
+-wait:
 
--wait:
--txt,40,80:KallistiOS, aka KOS ("chaos").
-
-Wikipedia says:
-"KallistiOS is a free, BSD license-based
- development system for the Sega Dreamcast
- game console."
-
--txt,40,280:
-It comes with cross compilers, linkers, libraries
-etc.
-
-= Dreamcast homebrew development steps overview
--txt,30,40,white,yes:[ C code ]
--wait:
--txt,70,70,yellow:|
--txt,70,100,yellow:|
--txt,90,85,white:<------- Cross compile
--wait:
--txt,30,130,white,yes:[ SH4 object file]
--wait:
--txt,70,170,yellow:|
--txt,70,200,yellow:|
--txt,90,185,white:<---- Link ----
--txt,300,185,white,yes:[ KOS DC library (SH4) ]
--wait:
--txt,30,230,white,yes:[ Executable (.elf) ]
--wait:
--txt,270,230,white: *runnable on Dreamcast
--wait:
--txt,70,260,yellow:|
--txt,70,290,yellow:|
--txt,90,275,white:<---- objcopy, scramble, make image
--wait:
--txt,30,320,white,yes:[ Disc image (.cdi) ]
-
-= Dreamcast Homebrew Development Steps with mruby
+= Homebrew Development with mruby
 -txt,30,40,white,yes:[ C code ]
 -txt,430,40,white,yes:[ mruby code ]
 -wait:
@@ -166,35 +155,49 @@ etc.
 -txt,200,72,white:Cross
 -txt,200,96,white:compile
 -wait:
--txt,30,130,white,yes:[ SH4 object file]
+-txt,30,130,white,yes:[ SH4/PPC object file]
 -wait:
 -txt,160,160,yellow:|
 -txt,160,190,yellow:|
 -txt,178,175,white:<- link -
--txt,320,160,white,yes:[ KOS DC library (sh4) ]
+-txt,320,160,white,yes:[ DC/Wii library (SH4/PPC) ]
 -wait:
--txt,320,190,white,yes:[ mruby library (sh4) ]
+-txt,320,190,white,yes:[ mruby library (SH4/PPC) ]
 -wait:
 -txt,30,220,white,yes:[ Executable (.elf) ]
 -wait:
--txt,270,220,white: *runnable on Dreamcast
+-txt,270,220,white: *runnable on console
 -wait:
 -txt,160,250,yellow:|
 -txt,160,280,yellow:|
--txt,178,265,white:<--- objcopy, scramble, make image
+-txt,178,265,white:<--- binary munging
 -wait:
--txt,30,310,white,yes:[ Disc image (.cdi) ]
+-txt,30,310,white,yes:[ bootable image (cdi/dol) ]
+
+= Cross-platform for DC and Wii
 -wait:
--hline,156,34,264,4:red
--vline,156,34,40,4:red
--vline,416,34,40,4:red
+-txt,60,60:- mrbgems
+-wait:
+-txt,60,90:  - many issues, and gave up (for now)
+-wait:
+-txt,60,120:- Manual management
+-wait:
+-txt,60,150:  - Develep on DC, Wii, then DC again...
 
--hline,20,74,136,4:red
--hline,416,74,204,4:red
-
--vline,20,76,188,4:red
--vline,620,76,188,4:red
--hline,20,260,604,4:red
+= Directories
+-wait:
+-txt,60,30:project root
+  - Makefile.wii
+  - Makefile.dc
+  - src/
+    - common/
+      - .rb files
+    - wii/
+      - .rb file .c files (including main)
+    - dc/
+      - .rb file, .c files (including main)
+  - romdisk/
+    - asset files
 
 = Main entry point
 -txtblock,30,30,600,410
@@ -220,7 +223,6 @@ int main(int argc, char **argv) {
 functions
 -txt,420,280,yellow,yes:<- run mruby code
 -txt,260,310,yellow,yes:<- finish
-
 
 = mruby bytecode
 -txtblock,20,50,610,400
@@ -320,54 +322,11 @@ However, emulators are handy too.
 -txt,40,120:Emulators
  - Convenient. No need for the real unit.
  - Has Standard Out (STDOUT)
- - But, it's not the same.
+ - But, not the same.
 
 = Console (emulator/ip/serial)
 -txt,40,30: with emulators, console output is available
 -img,40,70: emulator_console_png
-
-= Getting the program onto Dreamcast
--wait:
--txt,40,40:There are multiple common methods
-of getting your binaries onto Dreamcast.
--wait:
--txt,40,100: 1. Use CD-Rs
--txt,40,130: 2. Use SDs with SD loader software
--txt,40,160: 3. Use Broadband Adapters (BBAs) with ip loader
--txt,40,190: 4. Use serial cable (DC coder's cable)
-  with serial loader
-
-= Getting the program onto Dreamcast
--txt,40,40:
-There are problems with all of them.
-
-CD-Rs: Expensive and time consuming.
-
-SDs: Cheaper, but still tedious.
-
-BBAs: Expensive.
-
-Serial cables: You can't buy them. Build.
-
-= Building the serial cable
--txt,40,40:I built my cable once.
--txt,40,70:The SD card reader has a connector:
-
--wait:
--img,0,0: DCSerialConnector_png
-
-= Building the serial cable
--txt,40,40:I built my cable once.
--txt,40,70:The SD card reader has a connector.
--txt,40,100:Finished (poorly done) connector:
--wait:
--img,110,60: soldered_connector_png
-
-= Finished cable
--img,30,30: DCToSerial_png
-
-=
--txt,80,200:It was unstable, but eventually worked.
 
 =
 -txt,80,200:Now you have all the knowledge needed!
