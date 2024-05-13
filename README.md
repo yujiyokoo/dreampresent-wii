@@ -10,10 +10,13 @@ For Dreamcast, there is a Docker-based build process. Please install Docker for 
 
 ## Build (for Dreamcast)
 
+The build requires an extra step of copying audio files at the moment (to be fixed soon).
 To build, run:
 
 ```
-docker run -i -t -v $(pwd):/mnt yujiyokoo/mruby-kos-dc bash -c 'cd /mnt && . /opt/toolchains/dc/kos/environ.sh && make --file=Makefile.dc
+rm -f romdisk/*.raw
+cp sound/*.wav romdisk/
+docker run -i -t -v $(pwd):/mnt yujiyokoo/mruby-kos-dc bash -c 'cd /mnt && . /opt/toolchains/dc/kos/environ.sh && make --file=Makefile.dc'
 ```
 
 This should build a CDI image called `dreampresent.cdi` which you can use on your emulator or write to a CD-R to run on a real Dreamcast unit.
@@ -29,8 +32,12 @@ This should build a CDI image called `dreampresent.cdi` which you can use on you
 
 This will be fixed soon, but currently, you have to first edit Makefile. There are paths like "/media/psf/Home/Repos/parallels-ubuntu/mruby/build/wii/lib/libmruby_core.a" and "/opt/devkitpro/portlibs/ppc" which you have to replace with the paths that suit your environment.
 
-Then run this command:
+Also, the build requires an extra step of copying audio files at the moment (to be fixed soon).
+
+After editing the Makefile, run:
 ```
+rm -f romdisk/*.wav
+cp sound/*.raw romdisk/
 make -f Makefile.wii clean && cd src/ && mrbc -g -Bprogram -o program.c  common/page_data.rb wii/platform_lib.rb common/presentation.rb common/dreampresent.rb common/start.rb  && cd .. && make -f Makefile.wii
 ```
 
