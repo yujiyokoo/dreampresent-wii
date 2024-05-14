@@ -240,6 +240,9 @@ class ImageContent
 end
 
 class SoundContent
+  # This is a massive hack. See the note above as well as on page.show
+  attr_accessor :played
+
   def initialize(name)
     @sound_name = name
     @played = false
@@ -249,7 +252,7 @@ class SoundContent
     # Currently this is a massive hack. Should be refactored this so it is
     # not treated like page contents that render, which is called every
     # frame, but rather as a one-time sound that is played.
-    return if @played
+    return ResultConstants::OK if @played
     puts "playing sound #{@sound_name}"
     case
     when @sound_name == "start"
@@ -414,7 +417,9 @@ class Page
 
   def show(dc_kos, presentation_state, start_time)
     @sections.each_with_index { |s, idx|
-    p s
+      # This is a masive hack to make the sound play when going back to previous pages. See notes below on SoundContent
+      s.played = false if s.is_a?(SoundContent)
+
       render_result = s.render(dc_kos, presentation_state, start_time)
       # puts "-------- section render result: #{ render_result }"
 
