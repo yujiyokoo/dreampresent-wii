@@ -255,7 +255,6 @@ static mrb_value draw_vertical_line(mrb_state *mrb, mrb_value self) {
 static mrb_value int_time(mrb_state *mrb, mrb_value self) {
   u64 curr_time = gettime();
   u32 curr_sec = ticks_to_millisecs(curr_time) / 1000;
-  // printf("curr_sec: %d\r", curr_sec);
   return mrb_int_value(mrb, curr_sec);
 }
 
@@ -271,6 +270,11 @@ static mrb_value play_jump_sound(mrb_state *mrb, mrb_value self) {
 
 static mrb_value play_hit_sound(mrb_state *mrb, mrb_value self) {
   AESND_PlayVoice(global_pb, VOICE_STEREO16, hit_wav_raw, hit_wav_raw_size, 44100, 0, 0);
+  return mrb_nil_value();
+}
+
+static mrb_value blank_screen(mrb_state *mrb, mrb_value self) {
+  GRRLIB_FillScreen(0x00000000);
   return mrb_nil_value();
 }
 
@@ -294,6 +298,7 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "play_jump_sound", play_jump_sound, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "play_start_sound", play_start_sound, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "play_hit_sound", play_hit_sound, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "blank_screen", blank_screen, MRB_ARGS_NONE());
 }
 
 // DreamPresentPng

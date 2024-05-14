@@ -25,7 +25,9 @@ end
 
 begin
   # puts 'Starting presentation.'
-  Dreampresent.new(DreamPresentRb.new(DreamPresent), Parser.new).start
+  dream_present = DreamPresentRb.new(DreamPresent)
+  Dreampresent.new(dream_present, Parser.new).start
+  ShisaJump.new(dream_present).start
 rescue => ex
   # Note backtrace is only available when you pass -g to mrbc
   puts ex.inspect + "\n" + ex.backtrace.join("\n")
