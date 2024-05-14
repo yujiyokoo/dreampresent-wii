@@ -316,8 +316,8 @@ extern const uint8_t qrcode_png_end[];
 
 = Differences - asset access
 -txt,30,30:String to const mapping for Wii
--txtblock,40,55,570,280
--code,60,60,C:const uint8_t *find_img(char* img) {
+-txtblock,40,85,620,280
+-code,60,90,C:const uint8_t *find_img(char* img) {
   if(strcmp(img, "profile_pic.png") == 0) {
     return profile_pic_png;
   } else if(strcmp(img, "avatar.png") == 0) {
@@ -376,7 +376,7 @@ time function:
   - Hard to debug
 -wait:
 -txt,40,90:Emulators
-  - Not the same as real units, but extremely handy
+  - Extremely useful for debugging
 -wait:
 -txt,40,120:
   - Often comes with terminal output (stdout)
@@ -386,8 +386,9 @@ time function:
 -wait:
 -img,40,70: emulator_console_png
 
-=
--txt,40,90:Now debugging on 2 platforms...
+= Testing and debugging
+-txt,40,90:New problem:
+  Now debugging on 2 platforms...
 
 = Summary
 -txt,40,40: - Cross-platform mruby "works"
@@ -395,8 +396,6 @@ time function:
  - Experience varies between the platforms
  - The actual platform-specific part often resemble
    each other
- - Dreamcast and Wii can build binaries from
-   mostly the same Ruby source
 
 = Thanks
 -txt,40,40: - mruby developers
