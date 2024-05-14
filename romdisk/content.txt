@@ -34,7 +34,8 @@
   Work: CipherStash
   Based in: Tokyo, Japan
   Previously in: Adelaide, South Australia
--img,60,260: yuji_avatar_png
+  Social: @yujiyokoo@ruby.social
+-img,60,220: yuji_avatar_png
 
 = About mruby
 -txt,60,60:Lightweight implemetation of Ruby
@@ -119,6 +120,7 @@ Dreamcast sold over 9 million units
 -txt,60,300: - Text, image, sound
 -wait:
 -sound:jump
+-wait:
 -txt,60,330: - It's a live demo
 
 = mruby, Dreamcast, and Wii
@@ -252,8 +254,8 @@ functions
 -txt,420,280,yellow,yes:<- run mruby code
 -txt,260,310,yellow,yes:<- finish
 
-= Main entry point (DC)
-
+= Main entry point (Wii)
+-txtblock,30,30,600,410
 
 = Dreampresent start.rb
 -txtblock,40,40,600,400
