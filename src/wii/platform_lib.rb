@@ -8,7 +8,7 @@ module Commands
   RESET_TIMER = -6
 end
 
-# Ruby-level wrapper to DcKos
+# Ruby-level wrapper to DreamPresent
 class DreamPresentRb
   include Commands
 
@@ -105,7 +105,7 @@ class DreamPresentRb
       # press STRAT or A to go forward
       if start_or_a_pressed?(previous_state, button_state) || remote_state == 1
         clear_obj_buffer if clear_screen_on_nav
-        play_test_sound
+        play_start_sound
         return NEXT_PAGE
       end
 

@@ -259,12 +259,18 @@ static mrb_value int_time(mrb_state *mrb, mrb_value self) {
   return mrb_int_value(mrb, curr_sec);
 }
 
-static mrb_value play_test_sound(mrb_state *mrb, mrb_value self) {
-  // play test sound
-  if(global_pb == NULL) {
-    global_pb = AESND_AllocateVoice(NULL);
-  }
-  AESND_PlayVoice(global_pb, VOICE_STEREO16, test_wav_raw, test_wav_raw_size, 44100, 0, 0);
+static mrb_value play_start_sound(mrb_state *mrb, mrb_value self) {
+  AESND_PlayVoice(global_pb, VOICE_STEREO16, start_wav_raw, start_wav_raw_size, 44100, 0, 0);
+  return mrb_nil_value();
+}
+
+static mrb_value play_jump_sound(mrb_state *mrb, mrb_value self) {
+  AESND_PlayVoice(global_pb, VOICE_STEREO16, jump_wav_raw, jump_wav_raw_size, 44100, 0, 0);
+  return mrb_nil_value();
+}
+
+static mrb_value play_hit_sound(mrb_state *mrb, mrb_value self) {
+  AESND_PlayVoice(global_pb, VOICE_STEREO16, hit_wav_raw, hit_wav_raw_size, 44100, 0, 0);
   return mrb_nil_value();
 }
 
@@ -285,7 +291,9 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "draw_horizontal_line", draw_horizontal_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, mwii_module, "draw_vertical_line", draw_vertical_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, mwii_module, "int_time", int_time, MRB_ARGS_NONE());
-  mrb_define_module_function(mrb, mwii_module, "play_test_sound", play_test_sound, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "play_jump_sound", play_jump_sound, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "play_start_sound", play_start_sound, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "play_hit_sound", play_hit_sound, MRB_ARGS_NONE());
 }
 
 // DreamPresentPng

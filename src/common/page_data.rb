@@ -314,9 +314,7 @@ class LineContent
   def render(dc_kos, _presentation_state, time_now)
     # currently supports 'red', 'yellow', 'black'
     # everything else will be white
-    # TODO: let's make a colour lookup class... See DcKos
     r, g, b = DreamPresentRb.colour_to_rgb(@colour)
-
 
     if @direction == :horizontal
       (0...@width).each do |line_num|
@@ -492,6 +490,9 @@ class Parser
         when section.slice(0,3) == 'bkg'
           bg_path = parse_line_no_xy(section)
           PageBaseContent.new(bg_path, page_count)
+        when section.slice(0,5) == 'sound'
+          sound_path = parse_line_no_xy(section)
+          SoundContent.new(bg_path)
         else
           # not sure. keep it as nil
         end

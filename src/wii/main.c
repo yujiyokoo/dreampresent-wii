@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
 
   // pad initialisation
   PAD_Init();
+  global_pb = AESND_AllocateVoice(NULL);
 
   // Wii Remote
   WPAD_Init();

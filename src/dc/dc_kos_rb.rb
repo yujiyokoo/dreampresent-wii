@@ -8,7 +8,7 @@ module Commands
   RESET_TIMER = -6
 end
 
-# Ruby-level wrapper to DcKos
+# Ruby-level wrapper to DreamPresent
 class DreamPresentRb
   include Commands
 
@@ -104,8 +104,8 @@ class DreamPresentRb
       # press STRAT or A to go forward (or swing the fishing controller)
       if start_or_a_pressed?(previous_state, button_state) || (fishing_swing_state > 200 && previous_fishing_swing_state <= 200)
 #        clear_obj_buffer if clear_screen_on_nav
-        play_test_sound
-          return NEXT_PAGE
+        play_jump_sound
+        return NEXT_PAGE
       end
 
       # press B to go back

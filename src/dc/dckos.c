@@ -318,7 +318,7 @@ void load_sound_effects(void) {
   sound_effects[0] = snd_sfx_load("/rd/test.wav");
 }
 
-static mrb_value play_test_sound(mrb_state *mrb, mrb_value self) {
+static mrb_value play_jump_sound(mrb_state *mrb, mrb_value self) {
   // TODO: do this in init
   snd_sfx_play(sound_effects[0], 255, 128);
   return mrb_nil_value();
@@ -355,7 +355,7 @@ void define_module_functions(mrb_state *mrb, struct RClass *module) {
   mrb_define_module_function(mrb, module, "draw_horizontal_line", draw_horizontal_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, module, "draw_vertical_line", draw_vertical_line, MRB_ARGS_REQ(6));
   mrb_define_module_function(mrb, module, "next_video_mode", next_video_mode, MRB_ARGS_NONE());
-  mrb_define_module_function(mrb, module, "play_test_sound", play_test_sound, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "play_jump_sound", play_jump_sound, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "wait_vbl", wait_vbl, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "wait_vbl_and_flip", wait_vbl_and_flip, MRB_ARGS_NONE());
 }
