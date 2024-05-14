@@ -73,6 +73,10 @@ class DreamPresentRb
     end
   end
 
+  def read_swing_state
+    @dc_kos.get_remote_state
+  end
+
   # This and respond_to? are for delegating functions not defined here to @dc_kos
   def method_missing(method, *args, &block)
     if @dc_kos.respond_to?(method)
