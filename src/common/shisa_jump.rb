@@ -24,7 +24,7 @@ class ShisaJump
       while true do
         shisa2_x -= current_shisa2_speed
         if shisa2_x < 0
-          current_shisa2_speed = (current_shisa2_speed * 1.5).to_i
+          current_shisa2_speed = (current_shisa2_speed * 15 / 10).to_i
           current_shisa2_speed = 128 if current_shisa2_speed > 128
           shisa2_x = 640
         end
@@ -49,7 +49,7 @@ class ShisaJump
         dream_present.render_screen_and_wait
 
         if collided?(shisa1_y, shisa2_x, current_shisa2_speed)
-          sleep(0.2)
+          18.times { dream_present.wait_vbl }
           game_over
           shisa1_y = GROUND_Y
           shisa1_y_vel = -8

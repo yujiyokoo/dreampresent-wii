@@ -278,6 +278,11 @@ static mrb_value blank_screen(mrb_state *mrb, mrb_value self) {
   return mrb_nil_value();
 }
 
+static mrb_value wait_vbl(mrb_state *mrb, mrb_value self) {
+  VIDEO_WaitVSync();
+  return mrb_nil_value();
+}
+
 void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "content_string", content_string, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "render_png", render_png, MRB_ARGS_REQ(3));
@@ -299,6 +304,7 @@ void define_module_functions(mrb_state* mrb, struct RClass* mwii_module) {
   mrb_define_module_function(mrb, mwii_module, "play_start_sound", play_start_sound, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "play_hit_sound", play_hit_sound, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, mwii_module, "blank_screen", blank_screen, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, mwii_module, "wait_vbl", wait_vbl, MRB_ARGS_NONE());
 }
 
 // DreamPresentPng
