@@ -35,10 +35,10 @@
   Based in: Tokyo, Japan
   Previously in: Adelaide, South Australia
   Social: @yujiyokoo@ruby.social
--img,60,220: yuji_avatar_png
+-img,110,220: yuji_avatar_png
 
 = About mruby
--txt,60,60:Lightweight implemetation of Ruby
+-txt,60,60:Lightweight implementation of Ruby
 -wait:
 -txt,60,90: - For embedded environments
 -wait:
@@ -84,7 +84,7 @@
 = About Wii
 -txt,10,30: - Great innovative console from Nintendo
 -wait:
--txt,10,90: - Relaesed in 2006
+-txt,10,90: - Released in 2006
    - Not very powerful - an update to GameCube
    - Wii Remote (aka Wiimote)
    - IBM PowerPC 729MHz
@@ -140,9 +140,9 @@ Dreamcast sold over 9 million units
 -txt,30,30:mruby support:
 -txt,60,60:Dreamcast - officially supported since 2020
 -txt,60,90:Wii - officially supported since 2023
--txt,60,150,yellow:$ make MRUBY_CONFIG=dreamcast_shelf
+-txt,60,150,yellow:$ make CONFIG=dreamcast_shelf
 -wait:
--txt,60,210,yellow:$ make MRUBY_CONFIG=nintendo_wii
+-txt,60,210,yellow:$ make CONFIG=nintendo_wii
 -wait:
 -txt,60,270:(toolchains and libraries needed)
 
@@ -212,22 +212,48 @@ Dreamcast sold over 9 million units
 -txt,60,180:- Manual management
 -txt,60,210:  - separate source files for platform things
 -wait:
--txt,60,240:  - Develep on DC, Wii, then DC again...
+-txt,60,240:  - Develop on DC, Wii, then DC again...
 
-= Directories
--wait:
--txt,60,30:project root
-  - Makefile.wii
-  - Makefile.dc
+= Original directories
+-txt,60,30:project root/
+  - Makefile
+  - src/
+    - .rb files
+    - .c files (including main)
+  - romdisk/
+    - asset files
+
+= Directories for Wii
+-txt,60,30:project root/
+  - Makefile
+  - src/
+    - .rb files
+    - .c files (including main)
+  - data/
+    - asset files
+
+= Current directories
+-txt,60,30:project root/
+
+
   - src/
     - common/
       - .rb files
-    - wii/
+
       - .rb file .c files (including main)
-    - dc/
+
       - .rb file, .c files (including main)
   - romdisk/
     - asset files
+
+-txt,60,60,yellow:  - Makefile.wii
+  - Makefile.dc
+
+
+
+    - wii/
+
+    - dc/
 
 = Main entry point (DC)
 -txtblock,30,30,600,410
@@ -261,7 +287,9 @@ functions
 -txtblock,40,40,600,400
 -code,50,50,ruby:begin
   puts "Starting presentation."
-  Dreampresent.new(DreamPresentRb.new(DreamPresent)).start
+  Dreampresent.new(
+    DreamPresentRb.new(DreamPresent)
+  ).start
 rescue => ex
   # NOTE: backtrace requires 'mrbc -g'
   p ex.backtrace
@@ -358,6 +386,9 @@ time function:
 -wait:
 -img,40,70: emulator_console_png
 
+=
+-txt,40,90:Now debugging on 2 platforms...
+
 = Summary
 -txt,40,40: - Cross-platform mruby "works"
    but the DX is not smooth
@@ -372,7 +403,7 @@ time function:
  - KallistiOS developers
  - DevkitPro
  - Simulant discord channel
- - Ruby Kaigi organisers and sponsors
+ - RubyKaigi organisers and sponsors
 -wait:
 -txt,40,190: - Everyone who came to this session
 
