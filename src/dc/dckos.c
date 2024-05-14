@@ -315,11 +315,12 @@ void print_exception(mrb_state *mrb) {
 sfxhnd_t sound_effects[1];
 
 void load_sound_effects(void) {
-  sound_effects[0] = snd_sfx_load("/rd/test.wav");
+  sound_effects[0] = snd_sfx_load("/rd/jump.wav");
+  sound_effects[0] = snd_sfx_load("/rd/start.wav");
+  sound_effects[0] = snd_sfx_load("/rd/hit.wav");
 }
 
 static mrb_value play_jump_sound(mrb_state *mrb, mrb_value self) {
-  // TODO: do this in init
   snd_sfx_play(sound_effects[0], 255, 128);
   return mrb_nil_value();
 }

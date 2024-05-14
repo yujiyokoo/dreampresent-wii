@@ -25,6 +25,7 @@ class ShisaJump
         shisa2_x -= current_shisa2_speed
         if shisa2_x < 0
           current_shisa2_speed = (current_shisa2_speed * 1.5).to_i
+          current_shisa2_speed = 128 if current_shisa2_speed > 128
           shisa2_x = 640
         end
         current_btns = dream_present.get_button_state
