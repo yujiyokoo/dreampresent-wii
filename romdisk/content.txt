@@ -310,6 +310,25 @@ each object calls the graphics API functions
 -wait:
 -txt,30,270:Then, GRRLIB_Render is invoked to render
 the whole screen
+-wait:
+-txt,30,330:* I tried to implement this in DC with software
+rendering, but it ended up being too slow
+
+= Differences - other
+-txt,30,30:GRRLIB's png support requires height and width
+to be multiples of 4
+-txt,30,110:Clock worked straight away on DC, but had issues
+ond Wii and I ended up implementing a special
+time function: 
+-txtblock,20,200,600,440
+-code,30,205,C:static mrb_value int_time(
+  mrb_state *mrb, mrb_value self
+) {
+  u64 curr_time = gettime();
+  u32 curr_sec =
+    ticks_to_millisecs(curr_time) / 1000;
+  return mrb_int_value(mrb, curr_sec);
+}
 
 = Testing and debugging
 -txt,40,30:Real console units: where it needs to work
