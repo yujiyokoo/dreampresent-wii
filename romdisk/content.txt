@@ -296,10 +296,6 @@ rescue => ex
   p ex.inspect
   raise ex
 end
--wait:
--txt,460,140,yellow,yes:^ kick off
--txt,460,140,yellow:|
--txt,270,220,yellow,yes:<- errors/clean up
 
 = Differences - asset access
 -txt,30,30:KOS provides "romdisk" virtual file system
@@ -339,20 +335,8 @@ render function to be called every frame
 GRRLIB_DrawImage(..);
 VIDEO_WaitVSync();
 GRRLIB_Render();
-
-= Differences - graphics API
--txt,30,30:With KOS, objects directly manipulate the VRAM
-when 'render' is called
 -wait:
--txt,30,120:With GRRLIB, objects are added to an object pool
--wait:
--txt,30,180:When 'render' is called for each frame,
-each object calls the graphics API functions
--wait:
--txt,30,270:Then, GRRLIB_Render is invoked to render
-the whole screen
--wait:
--txt,30,330:* I tried to implement this in DC with software
+-txt,30,390:* I tried to implement this style in DC with software
 rendering, but it ended up being too slow
 
 = Differences - other
@@ -393,9 +377,9 @@ time function:
 = Summary
 -txt,40,40: - Cross-platform mruby "works"
    but the DX is not smooth
- - Experience varies between the platforms
- - The actual platform-specific part often resemble
-   each other
+ - The actual platform-specific part often
+   resemble each other
+ - Debugging is still a big problem
 
 = Thanks
 -txt,40,40: - mruby developers
