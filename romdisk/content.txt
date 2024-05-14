@@ -125,11 +125,22 @@ Dreamcast sold over 9 million units
 -txt,30,30:mruby support:
 -txt,60,60:Dreamcast - officially supported since 2020
 -wait:
+-img,40,90:dc_pr_png
+
+= mruby, Dreamcast, and Wii
+-txt,30,30:mruby support:
+-txt,60,60:Dreamcast - officially supported since 2020
 -txt,60,90:Wii - officially supported since 2023
 -wait:
--txt,60,150:$ make MRUBY_CONFIG=dreamcast_shelf
+-img,40,120:wii_pr_png
+
+= mruby, Dreamcast, and Wii
+-txt,30,30:mruby support:
+-txt,60,60:Dreamcast - officially supported since 2020
+-txt,60,90:Wii - officially supported since 2023
+-txt,60,150,yellow:$ make MRUBY_CONFIG=dreamcast_shelf
 -wait:
--txt,60,210:$ make MRUBY_CONFIG=nintendo_wii
+-txt,60,210,yellow:$ make MRUBY_CONFIG=nintendo_wii
 -wait:
 -txt,60,270:(toolchains and libraries needed)
 

@@ -18,6 +18,8 @@
 #include "shisa1_png.h"
 #include "shisa2_png.h"
 #include "qrcode_png.h"
+#include "dc_pr_png.h"
+#include "wii_pr_png.h"
 
 const uint8_t *find_image_asset(char* image_name) {
   if(strcmp(image_name, "DCSerialConnector_png") == 0) {
@@ -54,6 +56,10 @@ const uint8_t *find_image_asset(char* image_name) {
     return shisa2_png;
   } else if(strcmp(image_name, "qrcode_png") == 0) {
     return qrcode_png;
+  } else if(strcmp(image_name, "dc_pr_png") == 0) {
+    return dc_pr_png;
+  } else if(strcmp(image_name, "wii_pr_png") == 0) {
+    return wii_pr_png;
   } else {
     // TODO: What should we return as default here?
     return swirl_blue_32x28_png;
