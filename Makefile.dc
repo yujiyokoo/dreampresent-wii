@@ -17,7 +17,7 @@ GAME_NAME = Dreampresent
 OBJS = src/dc/dreampresent.o src/dc/main.o romdisk.o src/dc/dckos.o
 
 # order here is important!
-MRB_SOURCES = src/dc/dc_kos_rb.rb src/common/page_data.rb src/common/presentation.rb src/common/dreampresent.rb src/common/start.rb
+MRB_SOURCES = src/dc/dc_kos_rb.rb src/common/page_data.rb src/common/presentation.rb src/common/dreampresent.rb src/common/shisa_jump.rb src/common/start.rb
 
 MRB_BYTECODE = src/dc/dreampresent.c
 
