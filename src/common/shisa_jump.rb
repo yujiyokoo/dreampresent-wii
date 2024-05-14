@@ -22,6 +22,7 @@ class ShisaJump
       current_shisa2_speed = INITIAL_SHISA2_SPEED
 
       while true do
+        dream_present.read_swing_state
         shisa2_x -= current_shisa2_speed
         if shisa2_x < 0
           current_shisa2_speed = (current_shisa2_speed * 15 / 10).to_i
@@ -50,7 +51,7 @@ class ShisaJump
 
         if collided?(shisa1_y, shisa2_x, current_shisa2_speed)
           18.times { dream_present.wait_vbl }
-          game_over
+          game_over(shisa1_y, shisa2_x)
           shisa1_y = GROUND_Y
           shisa1_y_vel = -8
           shisa2_x = 640
@@ -68,14 +69,17 @@ class ShisaJump
       (shisa2_x > SHISA1_X - SHISA_WIDTH - (current_shisa2_speed / 2)) && (shisa2_x < SHISA1_X + SHISA_WIDTH) # <- Horizontal check
   end
 
-  def game_over
+  def game_over(shisa1_y, shisa2_x)
     i = 0
-    y_pos = GROUND_Y
+    y_pos = shisa1_y
     dream_present.play_hit_sound
     while i < 30 do
       y_pos += 8
+      dream_present.blank_screen
       dream_present.render_png("shisa1_png", SHISA1_X, y_pos)
       dream_present.push_obj_buffer(PositionedPng.new("shisa1_png", SHISA1_X, y_pos))
+      dream_present.render_png("shisa2_flopped_png", shisa2_x, GROUND_Y)
+      dream_present.push_obj_buffer(PositionedPng.new("shisa2_flopped_png", shisa2_x, GROUND_Y))
       dream_present.render_screen_and_wait
       dream_present.clear_obj_buffer
       i += 1

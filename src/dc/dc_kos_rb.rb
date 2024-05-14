@@ -15,6 +15,7 @@ class DreamPresentRb
   def initialize(dc_kos)
     @dc_kos = dc_kos
     @obj_buffer = []
+    @current_swing_state = @previous_swing_state = 0
   end
 
   def self.colour_to_rgb(colour)
@@ -86,12 +87,25 @@ class DreamPresentRb
     end
   end
 
+  def read_swing_state
+    @prevous_state = @current_swing_state
+    @current_swing_state = @dc_kos::get_fishing_controller_swing_state
+  end
+
+  def get_remote_state
+    if @current_swing_state > 200 && @previous_swing_state <= 200
+      1
+    else
+      0
+    end
+  end
+
   def next_or_back(clear_screen_on_nav = true)
     previous_state = @dc_kos::get_button_state
-    previous_fishing_swing_state = @dc_kos::get_fishing_controller_swing_state
+    @prevous_state = @dc_kos::get_fishing_controller_swing_state
     while true do
       button_state = @dc_kos::get_button_state
-      fishing_swing_state = @dc_kos::get_fishing_controller_swing_state
+      read_swing_state
 
       render_screen_and_wait
 
@@ -102,15 +116,12 @@ class DreamPresentRb
       return SWITCH_VIDEO_MODE if switch_video_mode_combination?(previous_state, button_state)
 
       # press STRAT or A to go forward (or swing the fishing controller)
-      if start_or_a_pressed?(previous_state, button_state) || (fishing_swing_state > 200 && previous_fishing_swing_state <= 200)
-#        clear_obj_buffer if clear_screen_on_nav
-        play_jump_sound
+      if start_or_a_pressed?(previous_state, button_state) || get_remote_state == 1
         return NEXT_PAGE
       end
 
       # press B to go back
       if b_pressed?(previous_state, button_state)
-#        clear_obj_buffer if clear_screen_on_nav
         return PREVIOUS_PAGE
       end
 
@@ -119,7 +130,6 @@ class DreamPresentRb
       return REW if left_pressed?(previous_state, button_state)
 
       previous_state = button_state
-      previous_fishing_swing_state = fishing_swing_state
     end
   end
 
