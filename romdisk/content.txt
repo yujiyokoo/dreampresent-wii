@@ -256,10 +256,12 @@ Dreamcast sold over 9 million units
     - dc/
 
 = Main entry point (DC)
--txtblock,30,30,600,410
+-txtblock,30,30,600,470
 -code,40,40,c:extern const uint8_t bytecode[];
 int main(int argc, char **argv) {
   vid_set_mode(DM_640x480_VGA, PM_RGB565);
+  snd_init();
+  load_sound_effects();
 
   mrb_state *mrb = mrb_open();
   struct RClass *dp_mod =
@@ -269,19 +271,23 @@ int main(int argc, char **argv) {
   mrb_close(mrb);
   return 0;
 }
--wait:
--txt,420,40,yellow,yes:<- mruby bytecode
--txt,360,130,yellow,yes:^ Dreamcast video
--txt,360,130,yellow:|
--txt,420,160,yellow,yes:<- init mruby
--txt,442,190,yellow,yes:<- build
--txt,478,220,yellow,yes:module and
-functions
--txt,420,280,yellow,yes:<- run mruby code
--txt,260,310,yellow,yes:<- finish
 
 = Main entry point (Wii)
--txtblock,30,30,600,410
+-txtblock,30,30,600,470
+-code,40,40,c:extern const uint8_t bytecode[];
+int main(int argc, char **argv) {
+  GRRLIB_Init();
+  AESND_Init();
+  WPAD_Init();
+
+  mrb_state *mrb = mrb_open();
+  struct RClass *dp_mod =
+    mrb_define_module(mrb, "DreamPresent");
+  define_module_functions(mrb, dp_mod);
+  mrb_load_irep(mrb, bytecode);
+  mrb_close(mrb);
+  return 0;
+}
 
 = Dreampresent start.rb
 -txtblock,40,40,600,400
