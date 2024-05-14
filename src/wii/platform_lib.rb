@@ -105,7 +105,6 @@ class DreamPresentRb
       # press STRAT or A to go forward
       if start_or_a_pressed?(previous_state, button_state) || remote_state == 1
         clear_obj_buffer if clear_screen_on_nav
-        play_start_sound
         return NEXT_PAGE
       end
 

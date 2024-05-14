@@ -233,8 +233,34 @@ class ImageContent
   end
 
   def render(dc_kos, _presentation_state, time_now)
-    dc_kos.render_png(@path, @x, @y)
-    dc_kos.push_obj_buffer(PositionedPng.new(@path, @x, @y))
+    dc_kos.render_png(@path, @x, @y) # DC
+    dc_kos.push_obj_buffer(PositionedPng.new(@path, @x, @y)) # Wii
+    ResultConstants::OK
+  end
+end
+
+class SoundContent
+  def initialize(name)
+    @sound_name = name
+    @played = false
+  end
+
+  def render(dc_kos, presentation_state, start_time)
+    # Currently this is a massive hack. Should be refactored this so it is
+    # not treated like page contents that render, which is called every
+    # frame, but rather as a one-time sound that is played.
+    return if @played
+    puts "playing sound #{@sound_name}"
+    case
+    when @sound_name == "start"
+      dc_kos.play_start_sound
+    when @sound_name == "jump"
+      dc_kos.play_jump_sound
+    when @sound_name == "hit"
+      dc_kos.play_hit_sound
+    end
+    @played = true
+
     ResultConstants::OK
   end
 end
@@ -388,6 +414,7 @@ class Page
 
   def show(dc_kos, presentation_state, start_time)
     @sections.each_with_index { |s, idx|
+    p s
       render_result = s.render(dc_kos, presentation_state, start_time)
       # puts "-------- section render result: #{ render_result }"
 
@@ -492,7 +519,7 @@ class Parser
           PageBaseContent.new(bg_path, page_count)
         when section.slice(0,5) == 'sound'
           sound_path = parse_line_no_xy(section)
-          SoundContent.new(bg_path)
+          SoundContent.new(sound_path)
         else
           # not sure. keep it as nil
         end
