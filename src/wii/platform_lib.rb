@@ -74,7 +74,8 @@ class DreamPresentRb
   end
 
   def read_swing_state
-    @dc_kos.get_remote_state
+    # This is currently only used on Dreamcast
+    # provided here only for compatibility
   end
 
   # This and respond_to? are for delegating functions not defined here to @dc_kos
@@ -113,7 +114,7 @@ class DreamPresentRb
       end
 
       # press B to go back
-      if b_pressed?(previous_state, button_state) || remote_state == -1
+      if b_pressed?(previous_state, button_state)
         clear_obj_buffer if clear_screen_on_nav
         return PREVIOUS_PAGE
       end

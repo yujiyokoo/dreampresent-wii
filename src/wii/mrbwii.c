@@ -54,11 +54,11 @@ void *record_input() {
     gforce_t gforce = input_buf.buffer[input_buf.index];
     movement_history[input_buf.index] = 0; // should use if-else-if-else but this is good enough
     // if it's near 0, and it's been positive recently, and been negative before that, then it's a neg_pos
-    if(abs(gforce.x) < 0.5 && find_above_threshold(input_buf.buffer, input_buf.index, 1.0) && find_below_threshold(input_buf.buffer, (input_buf.index+45)%60, -2.0)) {
+    if(abs(gforce.x) < 0.3 && find_above_threshold(input_buf.buffer, input_buf.index, 0.6) && find_below_threshold(input_buf.buffer, (input_buf.index+45)%60, -1.0)) {
       movement_history[input_buf.index] = -1;
     }
     // if it's near 0, and it's been negative recently, and been positive before that, then it's a pos_neg
-    if(abs(gforce.x) < 0.5 && find_below_threshold(input_buf.buffer, input_buf.index, -1.0) && find_above_threshold(input_buf.buffer, (input_buf.index+45)%60, 2.0)) {
+    if(abs(gforce.x) < 0.3 && find_below_threshold(input_buf.buffer, input_buf.index, -0.6) && find_above_threshold(input_buf.buffer, (input_buf.index+45)%60, 1.0)) {
       movement_history[input_buf.index] = 1;
     }
 
