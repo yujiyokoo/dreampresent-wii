@@ -17,6 +17,7 @@
 #include "ruby_kaigi_2024_dark_bg_png.h"
 #include "shisa1_png.h"
 #include "shisa2_png.h"
+#include "shisa2_flopped_png.h"
 #include "qrcode_png.h"
 #include "dc_pr_png.h"
 #include "wii_pr_png.h"
@@ -54,6 +55,8 @@ const uint8_t *find_image_asset(char* image_name) {
     return shisa1_png;
   } else if(strcmp(image_name, "shisa2_png") == 0) {
     return shisa2_png;
+  } else if(strcmp(image_name, "shisa2_flopped_png") == 0) {
+    return shisa2_flopped_png;
   } else if(strcmp(image_name, "qrcode_png") == 0) {
     return qrcode_png;
   } else if(strcmp(image_name, "dc_pr_png") == 0) {

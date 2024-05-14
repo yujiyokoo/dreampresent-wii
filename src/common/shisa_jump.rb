@@ -42,9 +42,9 @@ class ShisaJump
         end
 
         dream_present.blank_screen
-        dream_present.render_png("shisa2_png", shisa2_x, GROUND_Y)
+        dream_present.render_png("shisa2_flopped_png", shisa2_x, GROUND_Y)
         dream_present.render_png("shisa1_png", SHISA1_X, shisa1_y)
-        dream_present.push_obj_buffer(PositionedPng.new("shisa2_png", shisa2_x, GROUND_Y))
+        dream_present.push_obj_buffer(PositionedPng.new("shisa2_flopped_png", shisa2_x, GROUND_Y))
         dream_present.push_obj_buffer(PositionedPng.new("shisa1_png", SHISA1_X, shisa1_y))
         dream_present.render_screen_and_wait
 
