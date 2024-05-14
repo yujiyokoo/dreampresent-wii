@@ -27,7 +27,7 @@ MRB_ROOT = /opt/mruby
 
 CFLAGS = -I$(MRB_ROOT)/include/ -L$(MRB_ROOT)/build/dreamcast/lib/
 
-all: rm-elf $(CDI_IMAGE)
+all: clean $(CDI_IMAGE)
 
 include $(KOS_BASE)/Makefile.rules
 
