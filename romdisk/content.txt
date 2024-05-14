@@ -10,6 +10,7 @@
 -resettimer
 
 = Table of Contents
+-sound:start
 -bkg:ruby_kaigi_2024_dark_bg_png
 -txt,40,40: - About me
  - About mruby
@@ -115,7 +116,10 @@ Dreamcast sold over 9 million units
 -txt,60,210:     "Outstanding Performance Award" at
 -txt,60,240:     Fukuoka Ruby Awards 2023
 -wait:
--txt,60,270: - It's a live demo
+-txt,60,300: - Text, image, sound
+-wait:
+-sound:jump
+-txt,60,330: - It's a live demo
 
 = mruby, Dreamcast, and Wii
 -txt,30,30:mruby support:
@@ -189,11 +193,13 @@ Dreamcast sold over 9 million units
 -txt,60,60:- mrbgems
 -wait:
 -txt,60,90:  - many issues, and gave up (for now)
+-txt,60,120:  - eg. linker script related issues from
+    the platform library
 -wait:
--txt,60,120:- Manual management
--txt,60,150:  - separate source files for platform things
+-txt,60,180:- Manual management
+-txt,60,210:  - separate source files for platform things
 -wait:
--txt,60,180:  - Develep on DC, Wii, then DC again...
+-txt,60,240:  - Develep on DC, Wii, then DC again...
 
 = Directories
 -wait:
@@ -299,35 +305,38 @@ when 'render' is called
 -wait:
 -txt,30,120:With GRRLIB, objects are added to an object pool
 -wait:
--txt,30,180:'render' is called for each frame.
-Each object calls the graphics API functions
+-txt,30,180:When 'render' is called for each frame,
+each object calls the graphics API functions
 -wait:
 -txt,30,270:Then, GRRLIB_Render is invoked to render
-the screen
+the whole screen
 
 = Testing and debugging
 -txt,40,30:Real console units: where it needs to work
   - Hard to debug
 -wait:
 -txt,40,90:Emulators
-  - Not the same, but handy
+  - Not the same as real units, but extremely handy
 -wait:
 -txt,40,120:
   - Often comes with terminal output (stdout)
+    - lxdream always made this easy
     - Dolphin recently made it easy to print
       to stdout
 -wait:
 -img,40,70: emulator_console_png
 
 = Summary
--txt,40,40: - Dreamcast and Wii can run the same Ruby code
- - Cross-platform mruby works, but needs more work
- - DX improvements needed (not Digital Transformation)
- - more features (sound, PowerVR, VMU)
- - build more demanding games
+-txt,40,40: - Cross-platform mruby "works"
+   but the DX is not smooth
+ - Experience varies between the platforms
+ - The actual platform-specific part often resemble
+   each other
+ - Dreamcast and Wii can build binaries from
+   mostly the same Ruby source
 
 = Thanks
--txt,40,40:- mruby developers
+-txt,40,40: - mruby developers
  - KallistiOS developers
  - DevkitPro
  - Simulant discord channel
