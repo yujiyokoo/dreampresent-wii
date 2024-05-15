@@ -273,7 +273,7 @@ end
 class PageBaseContent
   PAGES_BAR_LEN = 640 - 32
   PAGES_Y_POS = 440
-  DURATION = 20 * 60 # 20 mins
+  DURATION = 25 * 60 # 25 mins
   PROGRESS_LEN = 640 - 32
   PROGRESS_Y_POS = 440
 

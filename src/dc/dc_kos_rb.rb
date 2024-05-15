@@ -178,12 +178,13 @@ class DreamPresentRb
   end
 
   def clear_obj_buffer
-    @obj_buffer = []
+    # not needed on DC
+    #@obj_buffer = []
   end
 
   def push_obj_buffer(obj)
-    puts "pushing obj #{obj}"
-    @obj_buffer.push(obj)
+    # not needed on DC
+    #@obj_buffer.push(obj)
   end
 
   def render_png(img_path, x, y)

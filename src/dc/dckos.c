@@ -246,11 +246,11 @@ static mrb_value render_png(mrb_state *mrb, mrb_value self) {
 
   mrb_get_args(mrb, "Sii", &png_path, &base_x, &base_y);
   c_png_path = mrb_str_to_cstr(mrb, png_path);
-  printf("---- got path: %s \n", c_png_path);
+  // printf("---- got path: %s \n", c_png_path);
 
   png_to_img(c_png_path, 1, &img);
 
-  printf("---- KOS_IMG_FMT_I %lu, KOS_IMG_FMT_D %lu\n", KOS_IMG_FMT_I(img.fmt), KOS_IMG_FMT_D(img.fmt));
+  // printf("---- KOS_IMG_FMT_I %lu, KOS_IMG_FMT_D %lu\n", KOS_IMG_FMT_I(img.fmt), KOS_IMG_FMT_D(img.fmt));
 
   assert( KOS_IMG_FMT_I(img.fmt) == KOS_IMG_FMT_ARGB1555 );
   int x = 0;
@@ -321,16 +321,19 @@ void load_sound_effects(void) {
 }
 
 static mrb_value play_jump_sound(mrb_state *mrb, mrb_value self) {
+  printf("playing jump sound\n");
   snd_sfx_play(sound_effects[0], 255, 128);
   return mrb_nil_value();
 }
 
 static mrb_value play_start_sound(mrb_state *mrb, mrb_value self) {
+  printf("playing start sound\n");
   snd_sfx_play(sound_effects[1], 255, 128);
   return mrb_nil_value();
 }
 
 static mrb_value play_hit_sound(mrb_state *mrb, mrb_value self) {
+  printf("playing hit sound\n");
   snd_sfx_play(sound_effects[2], 255, 128);
   return mrb_nil_value();
 }
