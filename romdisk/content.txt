@@ -13,20 +13,14 @@
 -sound:start
 -bkg:ruby_kaigi_2024_dark_bg_png
 -txt,40,40: - About me
- - About mruby
- - About Dreamcast
- - About Wii
+ - About mruby, Dreamcast, Wii
+ - mruby support for Dreamcast and Wii
  - About this application
- - mruby, Dreamcast, and Wii
  - Why?
  - Cross platform development
- - What does cross-platform dev look like?
- - Cross platform dev process
- - Challenges
- - Limitations
- - Future directions
+ - Differences and limitations
+ - Summary
  - Thanks and info
- - Demo
 
 = About me
 -txt,60,30:Yuji Yokoo
@@ -348,9 +342,11 @@ rendering, but it ended up being too slow
 = Differences - other
 -txt,30,30:GRRLIB's png support requires height and width
 to be multiples of 4
--txt,30,110:Clock worked straight away on DC, but had issues
-ond Wii and I ended up implementing a special
-time function: 
+-wait:
+-txt,30,100:Wii Remote vs controller
+-wait:
+-txt,30,140:Clock worked straight away on DC, but had issues
+ond Wii and I implemented a new time function: 
 -txtblock,20,200,600,440
 -code,30,205,C:static mrb_value int_time(
   mrb_state *mrb, mrb_value self
