@@ -84,7 +84,7 @@
    - IBM PowerPC 729MHz
    - 24MB 1T-SRAM + 64MB GDDR3
    - Wii Optical Disc, GameCube Game Disc & SD card
-   - Easy exploits available for running your own code
+   - Easy exploits for running your code
    - No known easy way of booting custom discs
 
 = What's good about Wii today
@@ -336,8 +336,8 @@ GRRLIB_DrawImage(..);
 VIDEO_WaitVSync();
 GRRLIB_Render();
 -wait:
--txt,30,390:* I tried to implement this style in DC with software
-rendering, but it ended up being too slow
+-txt,30,390:* I tried to implement this style in DC with
+software rendering, but it was too slow
 
 = Differences - other
 -txt,30,30:GRRLIB's png support requires height and width
@@ -381,7 +381,7 @@ ond Wii and I implemented a new time function:
    but the DX is not smooth
  - The actual platform-specific part often
    resemble each other
- - Debugging is still a big problem
+ - Debugging is hard. Possibly doubled
 
 = Thanks
 -txt,40,40: - mruby developers
@@ -403,3 +403,4 @@ https://gitlab.com/yujiyokoo/docker-mruby-kos-dc
 = More information
 -txt,50,30:mruby on Retro Consoles
 -img,50,60:qrcode_png
+-txt,80,400: https://yujiyokoo.dev/mruby/
