@@ -21,6 +21,7 @@
 #include "qrcode_png.h"
 #include "dc_pr_png.h"
 #include "wii_pr_png.h"
+#include "tokyo_rubyist_meetup_636_png.h"
 
 const uint8_t *find_image_asset(char* image_name) {
   if(strcmp(image_name, "DCSerialConnector_png") == 0) {
@@ -63,6 +64,8 @@ const uint8_t *find_image_asset(char* image_name) {
     return dc_pr_png;
   } else if(strcmp(image_name, "wii_pr_png") == 0) {
     return wii_pr_png;
+  } else if(strcmp(image_name, "tokyo_rubyist_meetup_636_png") == 0) {
+    return tokyo_rubyist_meetup_636_png;
   } else {
     // TODO: What should we return as default here?
     return swirl_blue_32x28_png;

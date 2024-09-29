@@ -4,6 +4,8 @@
 =
 -img,0,0: main_title_640x480_png
 -wait:
+-img,2,240: tokyo_rubyist_meetup_636_png
+-wait:
 -txt,320,216,black:PRESS A TO START!
 
 = Resetting timer internally...
@@ -387,10 +389,11 @@ ond Wii and I implemented a new time function:
 -txt,40,40: - mruby developers
  - KallistiOS developers
  - DevkitPro
- - Simulant discord channel
+ - Simulant discord server
  - RubyKaigi organisers and sponsors
+ - Tokyo Rubyist Meetup organisers and sponsors
 -wait:
--txt,40,190: - Everyone who came to this session
+-txt,40,220: - Everyone who came to this session
 
 = More information
 -txt,10,40:Dreampresent cross-platform:
